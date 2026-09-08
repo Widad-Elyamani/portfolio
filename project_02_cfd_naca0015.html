@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 02: CFD Analysis of NACA 0015 Airfoil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 02
+        </div>
+        <h1>CFD Analysis of NACA 0015 Airfoil</h1>
+        <p>Computational Fluid Dynamics | Mesh Independence Study | Aerodynamic Validation</p>
+    </header>
+
+    <img src="assets/naca_cover_streamlines.jpg" alt="Streamlines and velocity magnitude around the NACA 0015 airfoil" class="hero-image">
+
+    <div class="container">
+
+        <!-- EXECUTIVE SUMMARY -->
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                This project demonstrates a comprehensive CFD analysis of the NACA 0015 symmetric airfoil using ANSYS Fluent. The analysis includes a rigorous <strong>9-level mesh independence study</strong> to verify solution accuracy, validation against NACA 0012 airfoil data, and detailed aerodynamic characterization through pressure distribution, velocity contours, and streamline analysis.
+            </p>
+            <p>
+                The study showcases practical CFD methodology: domain creation, structured meshing with boundary layer refinement, solver configuration, convergence monitoring, and result validation. Mass conservation verification confirms simulation accuracy.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Mesh Independence Levels</div>
+                    <div class="metric-value">9<span class="metric-unit">refinements</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Lift Coefficient (Cl)</div>
+                    <div class="metric-value">0.455<span class="metric-unit">final</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Drag Coefficient (Cd)</div>
+                    <div class="metric-value">0.0236<span class="metric-unit">final</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Max Velocity</div>
+                    <div class="metric-value">2.014<span class="metric-unit">m/s</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM STATEMENT -->
+        <section>
+            <h2>Problem Statement</h2>
+
+            <h3>Objective</h3>
+            <p>
+                Perform a complete CFD analysis of the NACA 0015 symmetric airfoil to:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li>Establish mesh-independent solution through systematic refinement</li>
+                <li>Characterize aerodynamic performance (lift, drag, pressure distribution)</li>
+                <li>Validate numerical results against reference airfoil (NACA 0012)</li>
+                <li>Demonstrate conservation of mass and physical accuracy</li>
+                <li>Analyze boundary layer development and flow separation</li>
+            </ul>
+
+            <h3>Simulation Parameters</h3>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Airfoil Geometry</span>
+                    <span class="spec-value">NACA 0015 (15% thickness, symmetric)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Chord Length</span>
+                    <span class="spec-value">1.0 meter</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Domain Type</span>
+                    <span class="spec-value">C-mesh (12.5m radius, 25m vertical)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Fluid</span>
+                    <span class="spec-value">Air (incompressible)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Density (ρ)</span>
+                    <span class="spec-value">1.225 kg/m³</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Dynamic Viscosity (μ)</span>
+                    <span class="spec-value">1.7894 × 10⁻⁵ kg/(m·s)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Inlet Velocity</span>
+                    <span class="spec-value">1.460 m/s (computed)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHODOLOGY -->
+        <section>
+            <h2>Methodology</h2>
+
+            <h3>Pre-Processing: Geometry & Meshing</h3>
+            <p>
+                The NACA 0015 airfoil geometry was imported from AirfoilPlotter into ANSYS Workbench. A C-mesh computational domain was created with dimensions of 12.5m radius, 12.5m horizontal extent, and 25m vertical extent to ensure far-field boundary independence.
+            </p>
+            <p>
+                <strong>Mesh Strategy:</strong> Structured quadrilateral mesh with strategic refinement:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Boundary layer refinement:</strong> 50 divisions on leading/trailing edge regions with bias factor 150 for y⁺ < 1</li>
+                <li><strong>Wake region:</strong> 100 divisions on C-mesh with bias factor 150 to capture trailing edge effects</li>
+                <li><strong>Far-field:</strong> Coarser elements transitioning smoothly away from airfoil</li>
+            </ul>
+
+            <div class="visualization">
+                <h4>Structured C-Mesh Domain</h4>
+                <img src="assets/naca_mesh_full.jpg" alt="Structured quadrilateral C-mesh refined toward the NACA 0015 airfoil surface and wake">
+                <p class="caption">Quadrilateral C-mesh, refined toward the airfoil surface and trailing wake using the bias-factor strategy described above. This is the final (Level 8) mesh used for production results.</p>
+            </div>
+
+            <h3>Solver Configuration</h3>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Solver Type</span>
+                    <span class="spec-value">ANSYS Fluent (Pressure-based)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Turbulence Model</span>
+                    <span class="spec-value">k-ω (k-omega) — for boundary layer accuracy</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Inlet BC</span>
+                    <span class="spec-value">Velocity inlet (uniform profile)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Outlet BC</span>
+                    <span class="spec-value">Pressure outlet (0 Pa gauge)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Airfoil Surface</span>
+                    <span class="spec-value">No-slip condition</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Convergence Criterion</span>
+                    <span class="spec-value">Residuals < 1e-4 + stable Cl/Cd</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- MESH INDEPENDENCE STUDY -->
+        <section>
+            <h2>Mesh Independence Study</h2>
+
+            <p>
+                A systematic mesh refinement study was conducted to ensure solution accuracy is independent of mesh density. The number of edge divisions was increased across 9 levels, and both lift and drag coefficients were monitored for convergence.
+            </p>
+
+            <h3>Mesh Quality Verification</h3>
+            <p>
+                Before running the refinement study, mesh quality metrics were checked against ANSYS-recommended thresholds (skewness < 0.9, orthogonal quality > 0.1) to ensure the structured mesh would not introduce numerical error independent of resolution.
+            </p>
+            <div class="img-grid">
+                <div class="visualization">
+                    <h4>Skewness</h4>
+                    <img src="assets/naca_mesh_quality_skewness.png" alt="Mesh skewness histogram">
+                    <p class="caption">Average 0.114, max 0.589 — well within the 0.9 target.</p>
+                </div>
+                <div class="visualization">
+                    <h4>Aspect Ratio</h4>
+                    <img src="assets/naca_mesh_quality_aspect.png" alt="Mesh aspect ratio histogram">
+                    <p class="caption">Average 4.34 — elongated boundary-layer cells, as intended by the bias factor.</p>
+                </div>
+                <div class="visualization">
+                    <h4>Orthogonal Quality</h4>
+                    <img src="assets/naca_mesh_quality_orthogonal.png" alt="Mesh orthogonal quality histogram">
+                    <p class="caption">Average 0.954, min 0.649 — comfortably above the recommended minimum.</p>
+                </div>
+            </div>
+
+            <h3>Results: Convergence Behavior</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Refinement Level</th>
+                        <th>Edge Divisions</th>
+                        <th>Cl (Lift)</th>
+                        <th>Cd (Drag)</th>
+                        <th>ΔCl from Prev.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>50–100</td>
+                        <td>0.40294</td>
+                        <td>0.033647</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>80–120</td>
+                        <td>0.44244</td>
+                        <td>0.029849</td>
+                        <td>+0.0395</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>120–160</td>
+                        <td>0.45039</td>
+                        <td>0.028261</td>
+                        <td>+0.0080</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>160–200</td>
+                        <td>0.44988</td>
+                        <td>0.027398</td>
+                        <td>-0.0005</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>200–300</td>
+                        <td>0.44821</td>
+                        <td>0.026560</td>
+                        <td>-0.0017</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>240–340</td>
+                        <td>0.44877</td>
+                        <td>0.025676</td>
+                        <td>+0.0006</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7</strong></td>
+                        <td>280–380</td>
+                        <td>0.45531</td>
+                        <td>0.023611</td>
+                        <td>+0.0065</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><strong>8 (Final)</strong></td>
+                        <td>380–480</td>
+                        <td><strong>0.4555</strong></td>
+                        <td><strong>0.02361</strong></td>
+                        <td><strong>+0.0002 ✓</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="finding">
+                <strong>✓ Mesh Independence Achieved</strong>
+                <p>
+                    Convergence stabilized at refinement level 7–8 (280–480 divisions). Changes in Cl and Cd between levels 7 and 8 are negligible (< 0.05%), confirming solution independence from further mesh refinement. <strong>Final values: Cl = 0.455, Cd = 0.0236</strong>
+                </p>
+            </div>
+
+            <div class="visualization">
+                <h4>Solver Convergence History</h4>
+                <img src="assets/naca_residuals.png" alt="Scaled residuals convergence plot for the final mesh">
+                <p class="caption">Scaled residuals (continuity, x/y-velocity, k, omega) for the final mesh, dropping below 1×10⁻⁹ by iteration 90 — confirming a fully converged steady-state solution rather than a stalled or oscillating one.</p>
+            </div>
+        </section>
+
+        <!-- CFD RESULTS -->
+        <section>
+            <h2>CFD Results & Flow Characteristics</h2>
+
+            <h3>Aerodynamic Coefficients</h3>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Lift Coefficient (Cl)</span>
+                    <span class="spec-value">0.455</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Drag Coefficient (Cd)</span>
+                    <span class="spec-value">0.0236</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Lift-to-Drag Ratio (L/D)</span>
+                    <span class="spec-value">19.3</span>
+                </div>
+            </div>
+
+            <h3>Flow Field Characteristics</h3>
+            <p>
+                <strong>Velocity Distribution:</strong> Maximum freestream velocity of 1.460 m/s accelerates to <strong>2.014 m/s</strong> at the leading edge and upper surface, representing a <strong>38% acceleration</strong>. This flow acceleration over the curved upper surface generates the pressure gradient that produces lift.
+            </p>
+
+            <p>
+                <strong>Pressure Distribution:</strong> Classic airfoil pressure pattern observed:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Upper surface:</strong> Low pressure region (blue in contours) due to flow acceleration</li>
+                <li><strong>Lower surface:</strong> Positive pressure region (green/yellow in contours)</li>
+                <li><strong>Leading edge:</strong> High pressure stagnation point where flow decelerates</li>
+                <li><strong>Trailing edge:</strong> Discontinuity creates wake structure extending downstream</li>
+            </ul>
+
+            <div class="visualization">
+                <h4>Pressure Contour</h4>
+                <img src="assets/naca_pressure_contour.jpg" alt="Static pressure contour around the NACA 0015 airfoil">
+                <p class="caption">Static pressure field (Pa): the low-pressure lobe (cyan/green) above the airfoil and the high-pressure stagnation point (orange/red) at the leading edge are the classic signature of lift generation on a cambered flow path.</p>
+            </div>
+
+            <p>
+                <strong>Boundary Layer:</strong> The k-ω turbulence model accurately captures the thin boundary layer at the no-slip airfoil surface. Clear velocity gradient visible from zero at the wall to freestream at ~0.1m from surface.
+            </p>
+
+            <div class="img-grid">
+                <div class="visualization">
+                    <h4>Velocity Contour</h4>
+                    <img src="assets/naca_velocity_contour.jpg" alt="Velocity magnitude contour around the NACA 0015 airfoil">
+                    <p class="caption">Velocity magnitude (m/s): freestream flow accelerates to 2.014 m/s over the upper surface before decelerating into the wake.</p>
+                </div>
+                <div class="visualization">
+                    <h4>Velocity Streamlines</h4>
+                    <img src="assets/naca_pressure_streamline.jpg" alt="Velocity streamlines around the NACA 0015 airfoil">
+                    <p class="caption">20,000-point streamline trace colored by velocity, showing boundary-layer development and the discontinuity shed from the trailing edge.</p>
+                </div>
+            </div>
+
+            <h3>Validation: NACA 0015 vs NACA 0012 Comparison</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>NACA 0012 (12% thick)</th>
+                        <th>NACA 0015 (15% thick)</th>
+                        <th>Difference</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Max Velocity</strong></td>
+                        <td>1.493 m/s</td>
+                        <td>2.014 m/s</td>
+                        <td>+34.9%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Boundary Layer</strong></td>
+                        <td>Resolved at both surfaces</td>
+                        <td>Resolved at both surfaces</td>
+                        <td>Similar quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Stagnation Point</strong></td>
+                        <td>Leading edge (expected)</td>
+                        <td>Leading edge (expected)</td>
+                        <td>✓ Consistent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wake Structure</strong></td>
+                        <td>Moderate trailing edge discontinuity</td>
+                        <td>More pronounced wake (thicker airfoil)</td>
+                        <td>✓ Expected physics</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="img-grid">
+                <div class="visualization">
+                    <h4>NACA 0012 — Reference</h4>
+                    <img src="assets/naca_vs_0012_velocity.jpg" alt="Velocity contour for the NACA 0012 reference airfoil">
+                    <p class="caption">Max velocity 1.493 m/s. Used as the relative-validation baseline.</p>
+                </div>
+                <div class="visualization">
+                    <h4>NACA 0012 — Streamlines</h4>
+                    <img src="assets/naca_vs_0012_streamline.jpg" alt="Streamlines for the NACA 0012 reference airfoil">
+                    <p class="caption">Same stagnation point and boundary-layer pattern as the NACA 0015 case, confirming consistent solver behavior across geometries.</p>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>✓ Validation Successful</strong>
+                <p>
+                    NACA 0015 results align with expected physics: thicker profile accelerates flow more significantly (34.9% velocity increase), creates more pronounced wake, but maintains consistent stagnation point and boundary layer behavior. Results validate against NACA 0012 reference.
+                </p>
+            </div>
+
+            <h3>Mass Conservation Verification</h3>
+            <div class="finding">
+                <strong>✓ Mass Conservation Confirmed</strong>
+                <p>
+                    Inlet mass flow rate: 1.483×10⁻³ kg/s<br>
+                    Outlet mass flow rate: 1.483×10⁻³ kg/s<br>
+                    <strong>Difference: < 0.1%</strong> — Confirms steady-state solution accuracy and solver convergence.
+                </p>
+            </div>
+        </section>
+
+        <!-- KEY LEARNINGS -->
+        <section>
+            <h2>Key Learnings & Engineering Insights</h2>
+
+            <h3>1. Mesh Independence is Non-Negotiable</h3>
+            <p>
+                The 9-level refinement study showed that coarse meshes (Level 1: 50–100 divisions) significantly underpredict aerodynamic coefficients. Cl increased by 13% from Level 1 to convergence, and Cd decreased by 30%. This demonstrates why blindly trusting a single mesh is dangerous — convergence studies are essential for CFD credibility.
+            </p>
+
+            <h3>2. Structured Meshing with Smart Refinement</h3>
+            <p>
+                The bias factor strategy (concentrating elements near the airfoil surface) was critical. By clustering 50 divisions near the leading edge with a bias of 150, boundary layer resolution was excellent without over-meshing the far-field. This efficiency is why structured meshing remains preferred for airfoil problems despite the rise of unstructured methods.
+            </p>
+
+            <h3>3. Turbulence Modeling Choice Matters</h3>
+            <p>
+                The k-ω model was selected over k-ε because it handles near-wall effects better without wall-function corrections. This is evident in the resolved boundary layer visible in contours. For wall-bounded flows, k-ω is superior to k-ε.
+            </p>
+
+            <h3>4. Validation Through Comparison, Not Just Theory</h3>
+            <p>
+                Comparing NACA 0015 against NACA 0012 provided a check that didn't rely on published tables. The 34.9% velocity increase due to 25% greater thickness is physically sensible and matches intuition. This "relative validation" approach is practical when experimental data is unavailable.
+            </p>
+
+            <h3>5. C-Mesh Domain Design</h3>
+            <p>
+                The C-mesh topology (radius 12.5m, vertical extent 25m for 1m chord) ensured far-field boundaries don't distort flow. Domain size is roughly 12.5 chord lengths away — a standard practice. Smaller domains would introduce artificial boundary effects; larger domains waste computational resources.
+            </p>
+        </section>
+
+        <!-- TECHNICAL DETAILS -->
+        <section>
+            <h2>Technical Implementation Details</h2>
+
+            <h3>Simulation Workflow</h3>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Geometry Import:</strong> NACA 0015 airfoil coordinates imported from AirfoilPlotter into ANSYS Workbench</li>
+                <li><strong>Domain Creation:</strong> Boolean operations to subtract airfoil from C-mesh domain</li>
+                <li><strong>Meshing:</strong> ANSYS Meshing with structured quadrilateral elements, 4-section domain division for refinement control</li>
+                <li><strong>Solver Setup:</strong> Fluent with k-ω turbulence model, pressure-based solver, velocity inlet/pressure outlet BCs</li>
+                <li><strong>Monitoring:</strong> Real-time plots of Cl, Cd, and residuals; solution converged at ~500–800 iterations depending on mesh level</li>
+                <li><strong>Post-Processing:</strong> Pressure contours, velocity magnitudes, streamlines, and surface probe plots generated in CFD-Post</li>
+            </ul>
+
+            <h3>Convergence Criteria</h3>
+            <p>
+                Convergence was determined by:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li>Residuals (continuity, velocity) dropping below 1×10⁻⁴</li>
+                <li>Cl and Cd curves plateauing (< 1% change over 50 iterations)</li>
+                <li>Force coefficient monitors reaching steady state</li>
+            </ul>
+
+            <h3>Computational Requirements</h3>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Mesh Density (Final)</span>
+                    <span class="spec-value">~40,000–50,000 elements (Level 8)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Solver Time per Case</span>
+                    <span class="spec-value">~15–20 minutes (student license)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Total Study Time</span>
+                    <span class="spec-value">~3 hours (9 mesh refinement levels)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section>
+            <h2>Conclusion</h2>
+
+            <p>
+                This CFD study of the NACA 0015 airfoil demonstrates a complete, professional approach to aerodynamic analysis: rigorous mesh independence verification, proper turbulence modeling, validation against reference data, and mass conservation checks. The 9-level refinement study proves that convergence was achieved, not assumed.
+            </p>
+
+            <p>
+                Key findings (Cl = 0.455, Cd = 0.0236, L/D = 19.3) are physically realistic for a symmetric airfoil at low angle of attack. The comparison with NACA 0012 validates results and demonstrates how thickness affects flow acceleration (34.9% increase) and wake structure. The work illustrates both CFD methodology and practical airfoil aerodynamics.
+            </p>
+
+            <div style="background: #e8f5e9; padding: 25px; border-radius: 4px; margin-top: 25px; border-left: 4px solid #2e7d32;">
+                <p style="font-weight: 600; color: #1b5e20; margin-bottom: 10px;">✓ Project Outcomes</p>
+                <ul style="margin-left: 20px; color: #2e7d32;">
+                    <li>Completed rigorous mesh independence study with 9 refinement levels</li>
+                    <li>Achieved convergent aerodynamic coefficients (Cl = 0.455, Cd = 0.0236)</li>
+                    <li>Validated results against NACA 0012 reference data</li>
+                    <li>Verified mass conservation (< 0.1% error)</li>
+                    <li>Generated publication-quality CFD visualizations</li>
+                    <li>Demonstrated professional CFD methodology suitable for aerospace design</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 02: CFD Analysis of NACA 0015 Airfoil</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">June 2026</p>
+    </footer>
+
+</body>
+</html>

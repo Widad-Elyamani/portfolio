@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 06: Alpha Jet Composite Radome — Design, FEA <title>Project 02: CFD Analysis of NACA 0015 Airfoil</title>amp; Manufacturing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+            .callout-airbus { background:linear-gradient(135deg,#f5f8fc 0%, #eaf1fa 100%); border-left:4px solid #133D6E; padding:22px 26px; border-radius:4px; margin:20px 0; }
+        .callout-airbus h3 { color:#133D6E; margin-bottom:10px; font-size:1em; text-transform:uppercase; letter-spacing:0.6px; }
+        .method-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:20px 0; }
+        .method-step { background:#fff; border:1px solid #e0e6ed; border-top:3px solid #133D6E; padding:15px 12px; border-radius:4px; text-align:center; }
+        .method-step .letter { font-size:1.8em; font-weight:700; color:#133D6E; line-height:1; }
+        .method-step .name { font-size:0.8em; color:#666; margin-top:6px; text-transform:uppercase; letter-spacing:0.5px; }
+        .method-step .desc { font-size:0.85em; color:#555; margin-top:8px; line-height:1.4; }
+        @media (max-width:700px) { .method-grid { grid-template-columns:1fr 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 06
+        </div>
+        <h1>Alpha Jet Composite Radome — Design, FEA &amp; Manufacturing</h1>
+        <p>PFE Internship, Airbus Atlantic Maroc Composites | CATIA V5 · ANSYS Workbench · ACP · Fluent · Modal · Autodyn | E-glass/Epoxy | DMAIC</p>
+    </header>
+
+    <img src="assets/radome_structural_moment.jpg" alt="Static structural FEA results on the Alpha Jet composite radome" class="hero-image" style="max-height:380px; object-fit:contain; background:#eaf1fa;">
+
+    <div class="container">
+
+        <!-- CONTEXT CALLOUT -->
+        <section>
+            <div class="callout-airbus">
+                <h3>Industrial Context</h3>
+                <p style="color:#2a3550; margin-bottom:6px;">
+                    Final-year engineering project (PFE) at <strong>Airbus Atlantic Maroc Composites</strong>, Casablanca — March to August 2025 — carried out with the site's UAP draping manager and methods team. Delivered under Morocco's <strong>Al-Ghaith</strong> cloud-seeding programme, which fits a new off-the-shelf meteorological radar to the Moroccan Air Force's Alpha Jet fleet.
+                </p>
+                <p style="color:#2a3550; font-size:0.94em;">
+                    The existing metallic radome doesn't fit the new radar's dimensions or its RF requirements, so a new <strong>non-standard composite radome</strong> had to be designed from measurements taken directly on the aircraft, validated by multi-physics FEA, and industrialised as a hand-lay-up manufacturing process with route sheet and cost model.
+                </p>
+            </div>
+        </section>
+
+        <!-- EXECUTIVE SUMMARY -->
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                End-to-end development of a bespoke E-glass/epoxy composite radome for the Alpha Jet nose, replacing the OEM metallic component to accommodate a new Honeywell meteorological radar. The project runs the full <strong>DMAIC</strong> cycle — Define the mission and constraints, Measure the existing hardware and select materials, Analyse the design through four independent FEA disciplines (static structural on the composite laminate, aerodynamics in Fluent, vibration modal analysis, and bird-strike impact in Autodyn), Improve by industrialising the manufacturing route, and Control against FAA Part 25 acceptance criteria.
+            </p>
+            <p>
+                The chosen 20-ply laminate (5.4&nbsp;mm consolidated thickness) passes every check: bending and compression safety factors ≥ 100, no natural frequencies inside the operational excitation band (all modes above 580&nbsp;Hz), acceptable drag at Mach 0.8 flight speed, and full survival of a 0.13&nbsp;kg bird strike at 200&nbsp;m/s. The improve phase delivers the mould concept (aluminium female mould, autoclave-cured at 180&nbsp;°C), the hand-lay-up procedure, and the manufacturing route sheet + cost model handed to the methods team.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Chosen Laminate</div>
+                    <div class="metric-value">20<span class="metric-unit">plies × 0.27 mm = 5.4 mm</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Static Safety Factor</div>
+                    <div class="metric-value">≥ 100<span class="metric-unit">bending &amp; compression</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">First Natural Frequency</div>
+                    <div class="metric-value">581<span class="metric-unit">Hz (no resonance risk)</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Bird Strike Survived</div>
+                    <div class="metric-value">0.13<span class="metric-unit">kg @ 200 m/s</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DMAIC METHODOLOGY -->
+        <section>
+            <h2>DMAIC Methodology</h2>
+            <p>
+                Structured under the Six Sigma DMAIC framework, matching how Airbus Atlantic Maroc runs its process-improvement projects. Each phase produced its own deliverable.
+            </p>
+            <div class="method-grid">
+                <div class="method-step">
+                    <div class="letter">D</div>
+                    <div class="name">Define</div>
+                    <div class="desc">Mission profile, client, envelope, technical constraints</div>
+                </div>
+                <div class="method-step">
+                    <div class="letter">M</div>
+                    <div class="name">Measure</div>
+                    <div class="desc">Radar dims, CATIA CAD, composite material selection</div>
+                </div>
+                <div class="method-step">
+                    <div class="letter">A</div>
+                    <div class="name">Analyse</div>
+                    <div class="desc">Static · CFD · Modal · Bird-strike FEA</div>
+                </div>
+                <div class="method-step">
+                    <div class="letter">I</div>
+                    <div class="name">Improve</div>
+                    <div class="desc">Mould, lay-up, route sheet, cost model</div>
+                </div>
+                <div class="method-step">
+                    <div class="letter">C</div>
+                    <div class="name">Control</div>
+                    <div class="desc">FAA Part&nbsp;25, dimensional &amp; functional checks</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEASURE: CAD + MATERIAL -->
+        <section>
+            <h2>Measure — CAD &amp; Material Selection</h2>
+
+            <h3>CAD Design</h3>
+            <p>
+                The new radar was measured in-situ on the aircraft. Recorded reference dimensions:
+                radar diameter 225&nbsp;mm, integration depth 235&nbsp;mm, resulting radome length 500&nbsp;mm.
+                The 3D geometry was built in <strong>CATIA V5</strong> from those measurements and exported to Workbench for downstream simulations and mould design.
+            </p>
+            <div class="visualization">
+                <h4>Radome geometry — CATIA V5 (isometric, front, top and rear views)</h4>
+                <img src="assets/radome_cad_catia.jpg" alt="CATIA V5 CAD model of the Alpha Jet radome in four orthographic views">
+                <p class="caption">Ogival profile chosen for a balance of aerodynamic drag, internal radar volume, and manufacturability with a female mould. Base diameter 390&nbsp;mm, length 500&nbsp;mm.</p>
+            </div>
+
+            <h3>Why E-glass / Epoxy?</h3>
+            <p>
+                The single most important radome requirement is <strong>electromagnetic transparency</strong> — the radar's beam has to pass through the shell with minimal attenuation. This rules out carbon fibre despite its superior mechanical properties: carbon is electrically conductive, so it both scatters the radar signal and attracts lightning strikes. E-glass is a dielectric — silica-based, non-conductive — so it lets the RF signal through and provides adequate mechanical strength for the aerodynamic and impact loads. It is also significantly cheaper and easier to recycle than carbon, and the standard aerospace choice for radomes.
+            </p>
+
+            <h3>Laminate Properties — Rule of Mixtures</h3>
+            <p>
+                Ply properties calculated by ROM from the epoxy matrix (E<sub>m</sub> = 4.5&nbsp;GPa, ν<sub>m</sub> = 0.40, ρ<sub>m</sub> = 1200&nbsp;kg/m³) and E-glass fibre (E<sub>f</sub> = 74&nbsp;GPa, ν<sub>f</sub> = 0.25, ρ<sub>f</sub> = 2600&nbsp;kg/m³) at the standard 55&nbsp;% fibre / 45&nbsp;% matrix volume fraction:
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">E<sub>1</sub> (longitudinal)</span><span class="spec-value">42.73 GPa</span></div>
+                <div class="spec-item"><span class="spec-label">E<sub>2</sub> = E<sub>3</sub> (transverse)</span><span class="spec-value">9.31 GPa</span></div>
+                <div class="spec-item"><span class="spec-label">G<sub>12</sub> (shear)</span><span class="spec-value">3.34 GPa</span></div>
+                <div class="spec-item"><span class="spec-label">ν<sub>12</sub></span><span class="spec-value">0.069</span></div>
+                <div class="spec-item"><span class="spec-label">ν<sub>21</sub></span><span class="spec-value">0.318</span></div>
+                <div class="spec-item"><span class="spec-label">ρ (composite)</span><span class="spec-value">1970 kg/m³</span></div>
+            </div>
+            <p style="font-size:0.9em; color:#666; margin-top:-6px;">
+                Consolidated ply thickness 0.27 mm (from ~0.8 mm raw prepreg after autoclave cure at 180 °C and pressure). These numbers were entered as a custom orthotropic material in ANSYS Engineering Data.
+            </p>
+        </section>
+
+        <!-- ANALYSE: STRUCTURAL -->
+        <section>
+            <h2>Analyse — Composite Structural FEA (ACP + Static Structural)</h2>
+            <p>
+                Six laminates were compared under identical loading — 5, 10, 15, 20, 25 and 30 plies — to find the ply count that balances strength, stiffness and mass. Each laminate uses a balanced, symmetric stacking sequence blending 0° (longitudinal strength), ±45° (shear / interlaminar), 90° (hoop) and ±30° (damage tolerance) plies. The 0° ply-direction visualisation shows how the ACP model wraps the ply frame around the ogival surface:
+            </p>
+            <div class="visualization" style="max-width:500px; margin:15px auto;">
+                <h4>Ply direction visualisation — ANSYS Composite PrepPost</h4>
+                <img src="assets/radome_fiber_orientation.jpg" alt="0° ply direction arrows wrapping around the radome surface in ANSYS ACP">
+                <p class="caption">0° fibre orientation. Similar plots were produced for ±45°, 90° and ±30° layers to verify the stacking sequence.</p>
+            </div>
+
+            <h3>Loading</h3>
+            <p>
+                Loads taken from the aerodynamic pressure result (below): a compression force of −6599&nbsp;N applied on the outer surface (F = P × A, with peak pressure 46&nbsp;kPa on a 0.143&nbsp;m² surface), and a bending moment calculated per ply configuration from σ<sub>max</sub> = 35&nbsp;MPa (E-glass/epoxy allowable) and I = πDt³/8.
+            </p>
+
+            <div class="visualization">
+                <h4>Equivalent stress, deformation and elastic strain (20-ply laminate, bending)</h4>
+                <img src="assets/radome_structural_moment.jpg" alt="Three contour plots on the radome showing von Mises stress, total deformation and equivalent strain">
+                <p class="caption">
+                    20-ply configuration (5.4&nbsp;mm) under the derived bending moment. Peak stress <strong>14.2&nbsp;kPa</strong>, tip deflection <strong>0.25&nbsp;µm</strong>, peak elastic strain <strong>3.75&nbsp;× 10⁻⁷</strong>. Everything below 35&nbsp;MPa allowable by three orders of magnitude — safety factor pinned at 1000 in the report table.
+                </p>
+            </div>
+
+            <div style="background:#f5f8fc; padding:18px 22px; border-radius:4px; margin:20px 0; font-size:0.94em; color:#2a3550;">
+                <strong>Selection.</strong> Fewer plies give unnecessarily high stresses; more plies increase mass without changing conclusions. <strong>20 plies × 0.27 mm = 5.4 mm</strong> was chosen as the working laminate — sufficient safety margin, sensible weight, aligned with standard aerospace laminate thickness bands.
+            </div>
+        </section>
+
+        <!-- ANALYSE: AERO -->
+        <section>
+            <h2>Analyse — Aerodynamic CFD (Fluent)</h2>
+            <p>
+                Full 3D external-flow simulation of the radome at <strong>1000&nbsp;km/h (≈ 278 m/s, Mach 0.8)</strong> — representative of Alpha Jet cruise speed. Compressible flow, pressure-based coupled solver, standard freestream conditions.
+            </p>
+
+            <div class="visualization">
+                <h4>Pressure contour (mid-plane)</h4>
+                <img src="assets/radome_pressure_contour.jpg" alt="Pressure contour around the radome showing stagnation region and rear expansion">
+                <p class="caption">
+                    Peak stagnation pressure <strong>46&nbsp;kPa</strong> on the nose tip (red spot), classical stagnation → surface expansion pattern along the flanks, sharp low-pressure wake behind (blue). This pressure field is exactly what fed the structural analysis above.
+                </p>
+            </div>
+
+            <div class="visualization">
+                <h4>Velocity contour</h4>
+                <img src="assets/radome_velocity_contour.jpg" alt="Velocity magnitude contour showing stagnation region and wake">
+                <p class="caption">
+                    Freestream ≈ 278 m/s (orange). Deep blue stagnation region on the nose; acceleration around the shoulders (green); a well-defined low-momentum wake behind the base — typical bluff-body signature.
+                </p>
+            </div>
+
+            <div class="visualization">
+                <h4>Velocity streamlines</h4>
+                <img src="assets/radome_streamlines.jpg" alt="Streamlines wrapping around the radome, showing attached flow at the nose and separation at the base">
+                <p class="caption">
+                    Flow stays attached over the nose and shoulders (good aerodynamic shaping), separates cleanly at the sharp base and forms a recirculating wake. Drag force <strong>1407 N</strong>, C<sub>d</sub> ≈ 0.21 — both cross-checked analytically from F<sub>d</sub> = ½ρv²C<sub>d</sub>A and matching the Fluent monitor.
+                </p>
+            </div>
+        </section>
+
+        <!-- ANALYSE: MODAL -->
+        <section>
+            <h2>Analyse — Vibration Modal Analysis</h2>
+            <p>
+                Nose-mounted parts have to steer clear of the aircraft's excitation spectrum — turbofan blade-passing frequencies, aerodynamic buffet, structural coupling from the airframe. The first six free-vibration modes of the composite radome were extracted in ANSYS Modal.
+            </p>
+            <div class="visualization">
+                <h4>Six lowest natural modes of the 20-ply radome</h4>
+                <img src="assets/radome_modal_shapes.jpg" alt="Six vibration modes of the composite radome — 580.7 Hz, 580.8 Hz, 1016.4 Hz, 1016.5 Hz, 1031.9 Hz, 1031.9 Hz">
+                <p class="caption">
+                    <strong>Modes 1–2 at 580.7 &amp; 580.8 Hz</strong> — degenerate pair (symmetric structure), global first-bending shape with tip amplitude dominating. <strong>Modes 3–4 at 1016.4 &amp; 1016.5 Hz</strong> — two-lobe torsion-bending pair. <strong>Modes 5–6 at 1031.9 Hz</strong> — higher-order four/multi-lobe shell modes. All frequencies sit well above the Alpha Jet's operational excitation band, confirming no resonance risk.
+                </p>
+            </div>
+        </section>
+
+        <!-- ANALYSE: BIRD STRIKE -->
+        <section>
+            <h2>Analyse — Bird Strike (ANSYS Autodyn)</h2>
+            <p>
+                Explicit-dynamics impact simulation with a soft-body SPH bird model, following the standard aerospace approach (bird represented as a water column with ρ = 1000&nbsp;kg/m³). Impact scenario: 0.13&nbsp;kg bird at 200&nbsp;m/s (Alpha Jet approach/landing bird-strike envelope). The composite radome is modelled as the multi-layered laminate validated in the structural step.
+            </p>
+            <p>
+                Through the collision the bird deforms and fragments across the nose surface (Autodyn SPH particles disperse from cycle&nbsp;1000 onward), while the E-glass/epoxy laminate elastically absorbs the impulse without producing failed elements or delamination indicators. <strong>The radome remains structurally intact</strong> for the duration of the impact event.
+            </p>
+            <p style="font-size:0.9em; color:#666;">
+                This is a first-order impact check — a production certification programme would extend it with mass-and-velocity envelope sweeps, gelatine-body bird models, and validation against ballistic testing.
+            </p>
+        </section>
+
+        <!-- IMPROVE: MANUFACTURING -->
+        <section>
+            <h2>Improve — Manufacturing Development</h2>
+            <p>
+                Design validated by simulation is only half the deliverable. The Improve phase turns the geometry and material into a build plan the site's shop floor can execute.
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Mould type</span><span class="spec-value">Female (better outer surface finish, dimensional control)</span></div>
+                <div class="spec-item"><span class="spec-label">Mould material</span><span class="spec-value">Aluminium, 15 mm wall</span></div>
+                <div class="spec-item"><span class="spec-label">Cure cycle</span><span class="spec-value">Autoclave, 180 °C</span></div>
+                <div class="spec-item"><span class="spec-label">Lay-up technique</span><span class="spec-value">Hand lay-up (wet lay-up with consolidation roller)</span></div>
+                <div class="spec-item"><span class="spec-label">Documentation</span><span class="spec-value">Manufacturing route sheet (step increments of 10 for future insertions), full instruction sheet, cost estimation sheet</span></div>
+            </div>
+            <p style="font-size:0.9em; color:#666;">
+                Route sheet, instructions and cost model were produced in collaboration with the site's Methods technician. Original French deliverables are internal to Airbus Atlantic Maroc; an English translation is included in the thesis for defence purposes.
+            </p>
+        </section>
+
+        <!-- CONTROL -->
+        <section>
+            <h2>Control — Acceptance Criteria</h2>
+            <p>
+                The Control phase specifies the checks the finished part must pass before installation:
+            </p>
+            <ul style="margin-left:20px; color:#555;">
+                <li style="margin-bottom:6px;"><strong>FAA Part 25 safety factor</strong> — verified against the composite yield allowable</li>
+                <li style="margin-bottom:6px;"><strong>Dimensional control</strong> — CMM verification against the CATIA envelope, especially at the mounting flange</li>
+                <li style="margin-bottom:6px;"><strong>Functional tests</strong> — radar transmission through the finished laminate</li>
+                <li><strong>Lightning-protection test</strong> — surface conductivity check on the E-glass shell + any conductive strips added at the base</li>
+            </ul>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section>
+            <h2>Conclusion</h2>
+            <p>
+                The project delivers a complete, industry-ready design package for a non-standard composite radome — from the first field measurements on the Alpha Jet nose, through CATIA CAD, material selection and rule-of-mixtures characterisation, four independent FEA disciplines, to a manufacturing plan the Airbus Atlantic Maroc methods team can build against. The 20-ply E-glass/epoxy laminate meets every acceptance criterion with margin: static safety factor at least two orders of magnitude above the FAA Part 25 requirement, no resonance risk across the aircraft's excitation range, acceptable drag at Mach 0.8, and full survival of the Autodyn bird-strike case. The DMAIC structure keeps every design choice traceable back to a mission requirement, which is what a certification programme will look for downstream.
+            </p>
+
+            <div style="background:#e8f5e9; padding:25px; border-radius:4px; margin-top:25px; border-left:4px solid #2e7d32;">
+                <p style="font-weight:600; color:#1b5e20; margin-bottom:10px;">✓ Project Outcomes</p>
+                <ul style="margin-left:20px; color:#2e7d32;">
+                    <li>Complete DMAIC design cycle for a bespoke composite aerospace component</li>
+                    <li>CATIA V5 geometry from in-situ measurements on the aircraft</li>
+                    <li>Custom E-glass/epoxy laminate properties derived by rule of mixtures</li>
+                    <li>Four independent FEA disciplines: static composite structural (ACP), Fluent CFD, ANSYS Modal, Autodyn explicit dynamics</li>
+                    <li>20-ply laminate selected; all safety criteria met with margin</li>
+                    <li>Manufacturing route sheet, instructions and cost model delivered to methods team</li>
+                    <li>Control plan aligned with FAA Part 25</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 06: Alpha Jet Composite Radome</p>
+        <p>PFE — Airbus Atlantic Maroc Composites, Casablanca &nbsp;·&nbsp; March – August 2025</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+    </footer>
+
+</body>
+</html>

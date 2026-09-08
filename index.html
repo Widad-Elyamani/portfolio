@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widad Elyamani — Aerospace Engineering Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        /* Header / Hero */
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        header .subtitle {
+            font-size: 1.2em;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        header .tagline {
+            font-size: 0.95em;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 15px 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #133D6E;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #3D6FAB;
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            font-weight: 600;
+            color: #133D6E;
+            margin-bottom: 50px;
+            border-bottom: 2px solid #133D6E;
+            padding-bottom: 15px;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, #133D6E 0%, #3D6FAB 100%);
+            padding: 30px 25px;
+            color: white;
+        }
+
+        .project-number {
+            font-size: 0.85em;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .project-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .project-subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-desc {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: #f0f4fa;
+            color: #133D6E;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .project-link {
+            display: inline-block;
+            color: #133D6E;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .project-link:hover {
+            color: #3D6FAB;
+            transform: translateX(4px);
+        }
+
+        /* Status Badge */
+        .status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .status.completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status.inprogress {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        footer p {
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Widad Elyamani</h1>
+        <p class="subtitle">Aerospace Engineer</p>
+        <p class="tagline">Specialized in FEA/CFD Simulation, Composite Structures & Structural Analysis</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="mailto:widad.elyamani@uir.ac.ma">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2 class="section-title" id="projects">Portfolio Projects</h2>
+
+        <div class="projects-grid">
+
+            <!-- PROJECT 1: Stiffened Structures -->
+            <div class="project-card">
+                <img src="assets/wingbox_comparison.svg" alt="Wing box cross-section comparison thumbnail" class="card-image" style="background:#fafbfc; object-fit:contain;">
+                <div class="project-header">
+                    <div class="project-number">Project 01</div>
+                    <h3 class="project-title">Stiffened Wing Box Analysis & Optimization</h3>
+                    <p class="project-subtitle">Structural Analysis | Design Optimization</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Developed and optimized a stiffened aluminum wing box structure under combined bending, shear, and torsion loads. Fixed critical buckling failure through stiffener placement optimization while maintaining mass efficiency.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Structural Analysis</span>
+                        <span class="tag">FEA Theory</span>
+                        <span class="tag">Optimization</span>
+                        <span class="tag">Spreadsheet Modeling</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Resolved buckling margin of safety from -0.96 to +0.25 through design iteration
+                    </p>
+                    <a href="project_01_stiffened_structures.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 2: NACA 0015 Airfoil CFD -->
+            <div class="project-card">
+                <img src="assets/naca_cover_streamlines.jpg" alt="NACA 0015 streamlines thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 02</div>
+                    <h3 class="project-title">CFD Analysis of NACA 0015 Airfoil</h3>
+                    <p class="project-subtitle">Computational Fluid Dynamics | Mesh Independence</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Complete CFD analysis of symmetric NACA 0015 airfoil using ANSYS Fluent. Includes 9-level mesh independence study, k-ω turbulence modeling, and validation against NACA 0012 reference data. Demonstrates convergence methodology and aerodynamic characterization.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">ANSYS Fluent</span>
+                        <span class="tag">k-ω Turbulence</span>
+                        <span class="tag">Mesh Independence</span>
+                        <span class="tag">Validation</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Convergent solution with mesh independence verified; mass conservation < 0.1%
+                    </p>
+                    <a href="project_02_cfd_naca0015.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 3: ARN2 Convergent Nozzle -->
+            <div class="project-card">
+                <img src="assets/arn2_cover_mach.png" alt="ARN2 nozzle Mach contour thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 03</div>
+                    <h3 class="project-title">Compressible Flow in Converging Nozzle (ARN2)</h3>
+                    <p class="project-subtitle">Subsonic Jet | CFD Validation | NASA Benchmark</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        NASA-validated CFD analysis of compressible subsonic jet from ARN2 convergent nozzle. Includes density-based solver, SST k-ω turbulence modeling, grid convergence study, and direct comparison with NASA experimental PIV data and reference CFD results.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Density-Based Solver</span>
+                        <span class="tag">SST k-ω</span>
+                        <span class="tag">Grid Independence</span>
+                        <span class="tag">Compressible Flow</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Excellent agreement with NASA CFD; grid independence confirmed
+                    </p>
+                    <a href="project_03_arn2_nozzle.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 4: Structural Design Steel Shed -->
+            <div class="project-card">
+                <img src="assets/shed_frame_elevation.svg" alt="Steel shed frame elevation thumbnail" class="card-image" style="background:#fafbfc; object-fit:contain;">
+                <div class="project-header">
+                    <div class="project-number">Project 04</div>
+                    <h3 class="project-title">Structural Design for Steel Shed</h3>
+                    <p class="project-subtitle">Steel Structure | Eurocode 3 | Industrial Design</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Professional structural design of industrial automotive workshop shed using Eurocode 3 (EN 1993). Complete workflow from load calculation through member selection, verification checks (bending, shear, deflection, buckling), connection design, and SolidWorks CAD fabrication drawings.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Eurocode 3</span>
+                        <span class="tag">Steel Design</span>
+                        <span class="tag">Limit States</span>
+                        <span class="tag">SolidWorks</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Standards-based design from load calculation to fabrication drawings
+                    </p>
+                    <a href="project_04_steel_shed.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 5: Bicycle Crank Optimization -->
+            <div class="project-card">
+                <img src="assets/crank_optimised_stress.jpg" alt="Optimised crank arm stress contour thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 05</div>
+                    <h3 class="project-title">BMX Crank Arm — Design, FEA &amp; Optimisation</h3>
+                    <p class="project-subtitle">Archer's Design Methodology | Static &amp; Fatigue FEA | Al 7075</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Full design–analyse–optimise cycle for a BMX crank arm against a written client specification. Baseline modelled in Creo, static and fatigue FEA in ANSYS Workbench, mass reduced from 727 g to 297 g (−59 %) while keeping static SF above 10 and passing an infinite-life fatigue check. Delivered as a BS8888 engineering drawing.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">ANSYS Workbench</span>
+                        <span class="tag">Creo</span>
+                        <span class="tag">Static FEA</span>
+                        <span class="tag">Fatigue (SN)</span>
+                        <span class="tag">BS8888</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> 59 % mass reduction; static SF 10.4, fatigue SF 3.99 — all client specs met with margin
+                    </p>
+                    <a href="project_05_crank_optimization.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 6: Alpha Jet Composite Radome (PFE, Airbus) -->
+            <div class="project-card">
+                <img src="assets/radome_structural_moment.jpg" alt="Alpha Jet composite radome FEA thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 06</div>
+                    <h3 class="project-title">Alpha Jet Composite Radome — PFE at Airbus</h3>
+                    <p class="project-subtitle">DMAIC | CATIA · ANSYS ACP · Fluent · Modal · Autodyn | E-glass/Epoxy</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Final-year engineering project (PFE) at Airbus Atlantic Maroc Composites, Casablanca, under Morocco's Al-Ghaith cloud-seeding programme. End-to-end DMAIC design of a bespoke E-glass/epoxy radome for the Alpha Jet nose: CATIA geometry from in-situ measurements, four independent FEA disciplines (composite structural, Fluent CFD, modal, Autodyn bird strike), and a full manufacturing plan (mould, hand lay-up, route sheet, cost model).
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">CATIA V5</span>
+                        <span class="tag">ANSYS ACP</span>
+                        <span class="tag">Fluent</span>
+                        <span class="tag">Modal</span>
+                        <span class="tag">Autodyn</span>
+                        <span class="tag">Composites</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Complete industrial design package — 20-ply laminate validated across static, aero, modal and bird-strike criteria
+                    </p>
+                    <a href="project_06_alphajet_radome.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 7: 1045 Propeller CFD -->
+            <div class="project-card">
+                <img src="assets/prop_hero_render.jpg" alt="1045 propeller CAD render thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 07</div>
+                    <h3 class="project-title">CFD Analysis of 1045 Propeller Blade</h3>
+                    <p class="project-subtitle">Rotating CFD | Transient | UAV Propulsion</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Transient CFD of a 10&Prime; × 4.5&Prime; two-blade UAV propeller at 1100 RPM in ANSYS Fluent, using a nested rotating / static dual-domain setup with a sliding mesh interface and k–ω turbulence. Covers geometry, meshing, time-step derivation from the blade-passage period, and post-processing of velocity, pressure, streamlines, tip vortices and separation regions.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">ANSYS Fluent</span>
+                        <span class="tag">Rotating Machinery</span>
+                        <span class="tag">Transient CFD</span>
+                        <span class="tag">k-ω Turbulence</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Full rotating-domain workflow with Δt = 1.36 ms (20 sub-steps per blade passage); coherent tip-vortex capture
+                    </p>
+                    <a href="project_07_prop1045_cfd.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 8: Automated Cantilever FEA -->
+            <div class="project-card">
+                <img src="assets/beam_deformation.jpg" alt="Cantilever beam deformation contour thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 08</div>
+                    <h3 class="project-title">Automated FEA of a Cantilever Beam</h3>
+                    <p class="project-subtitle">ANSYS Mechanical Scripting | Static Structural | Beam-Theory Validated</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Fully scripted static-structural workflow in ANSYS Mechanical 2025 — SpaceClaim Python creates the geometry, a Mechanical ACT macro handles material, mesh, boundary conditions, solve, image export and results write-out with no manual interaction. Validated on a cantilever beam against Euler–Bernoulli theory.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">ANSYS Mechanical</span>
+                        <span class="tag">Python (ACT API)</span>
+                        <span class="tag">SpaceClaim Scripting</span>
+                        <span class="tag">Automation</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> 0.72 % deflection error vs analytical beam theory; end-to-end run in one macro
+                    </p>
+                    <a href="project_08_cantilever_fea.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 9: ONERA M6 Transonic CFD -->
+            <div class="project-card">
+                <img src="assets/onera_pressure_contour.jpg" alt="ONERA M6 pressure contour thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 09</div>
+                    <h3 class="project-title">Transonic CFD of the ONERA M6 Wing</h3>
+                    <p class="project-subtitle">3D RANS | Spalart–Allmaras | Shock Capture | Spanwise C<sub>p</sub></p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Full 3D transonic simulation of the canonical ONERA M6 wing benchmark in ANSYS Fluent at M = 0.84, Re = 11.7 × 10⁶ and α = 3.06°. Bullet-shaped far-field domain with body-of-influence mesh refinement, Spalart–Allmaras closure, ideal-gas compressibility. Captures the swept shock and matches the published wind-tunnel C<sub>p</sub> pattern at four spanwise stations.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">ANSYS Fluent</span>
+                        <span class="tag">Transonic</span>
+                        <span class="tag">Spalart–Allmaras</span>
+                        <span class="tag">Shock Capture</span>
+                        <span class="tag">Compressible</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Clean shock capture on canonical benchmark; C<sub>p</sub> at 4 stations matches ONERA experimental data
+                    </p>
+                    <a href="project_09_onera_m6.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+            <!-- PROJECT 10: PowerFly Girls Glider -->
+            <div class="project-card">
+                <img src="assets/glider_finished.jpg" alt="PowerFly Girls Glider thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 10</div>
+                    <h3 class="project-title">PowerFly Girls Glider — Design, Build &amp; Flight Test</h3>
+                    <p class="project-subtitle">Team Capstone | RC Powered Glider | Raymer · CATIA · Fabricated · Flown</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Four-person team capstone at UIR: complete design-build-test cycle for an RC powered glider. Reverse-engineered target specs (FAR Part 23 Level 1), Raymer weight buildup, four-way airfoil comparison (NACA 4412 selected), full component sizing, CATIA V5 assembly, drag/thrust/power envelope. Fabricated in foam + wood ribs, CG rebalanced mid-build with twin wing motors, flight tested successfully on the UIR campus.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Aircraft Design</span>
+                        <span class="tag">CATIA V5</span>
+                        <span class="tag">Raymer Method</span>
+                        <span class="tag">Fabrication</span>
+                        <span class="tag">Flight Testing</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Real airframe designed, built and flown; solved CG problem mid-build via fuselage re-length + twin wing motors
+                    </p>
+                    <a href="project_10_uav_glider.html" class="project-link">View Case Study →</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ABOUT SECTION -->
+        <h2 class="section-title" id="about">About This Portfolio</h2>
+        <div style="background: white; padding: 40px; border-radius: 8px; max-width: 800px;">
+            <p style="margin-bottom: 20px;">
+                This portfolio showcases projects spanning <strong>structural analysis, CFD simulation, composite manufacturing, aircraft design, and optimization</strong>. Each project demonstrates hands-on technical expertise combined with rigorous engineering analysis.
+            </p>
+            <p style="margin-bottom: 20px;">
+                Projects range from <strong>industrial experience at Airbus Atlantic Maroc</strong> (composite radome design and validation) to <strong>academic research</strong> (stiffened structure optimization, CFD validation) and <strong>freelance engineering services</strong> (parametric FEA optimization).
+            </p>
+            <p>
+                <strong>Key Skills:</strong> ANSYS Fluent/Mechanical · CATIA V5 · Creo Parametric · SolidWorks · FEA/CFD Analysis · Structural Optimization · Python Automation · MATLAB · Composite Structures · Aircraft Design · Flight Testing
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Aerospace Engineer</p>
+        <p>UIR Rabat | Aerospace Engineering (2020–2025)</p>
+        <p>
+            <a href="mailto:widad.elyamani@uir.ac.ma">widad.elyamani@uir.ac.ma</a> · 
+            <a href="tel:+212691730616">+212 691-730616</a> · 
+            <a href="https://linkedin.com/in/widad-elyamani">LinkedIn</a>
+        </p>
+        <p style="margin-top: 20px; font-size: 0.9em;">Last updated: June 2026</p>
+    </footer>
+
+</body>
+</html>

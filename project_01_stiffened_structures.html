@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 01: Stiffened Wing Box Analysis & Optimization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        /* Section styling */
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        /* Key metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        /* Comparison table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .comparison-table .baseline {
+            color: #f57c00;
+            font-weight: 600;
+        }
+
+        .comparison-table .optimized {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .improvement {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .worsening {
+            background: #ffebee;
+            color: #c62828;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Results visualization */
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img, .visualization svg {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            background: #fafbfc;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 250px;
+            margin: 30px 0;
+            padding: 20px;
+        }
+
+        .bar-group {
+            text-align: center;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .bar {
+            background: linear-gradient(to top, #133D6E, #3D6FAB);
+            border-radius: 4px 4px 0 0;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .bar-value {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #133D6E;
+            margin: 8px 0;
+        }
+
+        /* Process diagram */
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .process-step {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .process-step:hover {
+            border-color: #133D6E;
+            background: #f0f4fa;
+        }
+
+        .process-number {
+            background: #133D6E;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2em;
+            margin: 0 auto 10px;
+        }
+
+        .process-title {
+            font-weight: 600;
+            color: #0A2546;
+            margin-bottom: 8px;
+        }
+
+        .process-desc {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #133D6E;
+            opacity: 0.5;
+            margin: 0 -15px;
+        }
+
+        /* Key findings */
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .finding strong {
+            display: block;
+            color: #133D6E;
+            margin-bottom: 8px;
+        }
+
+        /* Technical specs */
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            section {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 01
+        </div>
+        <h1>Stiffened Wing Box Analysis & Optimization</h1>
+        <p>Structural Analysis | Design Optimization | Failure Mode Analysis</p>
+    </header>
+
+    <img src="assets/wingbox_comparison.svg" alt="Wing box cross-section comparison: baseline 6 booms vs optimized 10 booms" class="hero-image">
+
+    <div class="container">
+
+        <!-- EXECUTIVE SUMMARY -->
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                This project involved the design and optimization of a stiffened aluminum wing box structure subjected to combined bending, shear, and torsion loads. The baseline design exhibited a <strong>critical buckling failure</strong> (negative margin of safety), which was resolved through systematic stiffener placement optimization while maintaining mass efficiency.
+            </p>
+            <p>
+                Using a spreadsheet-based structural analysis framework, the design was refined to achieve <strong>positive margins of safety across all failure modes</strong> (bending, shear, and panel buckling) — demonstrating practical trade-offs between structural performance and weight.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Critical Failure Fixed</div>
+                    <div class="metric-value">Panel Buckling<span class="metric-unit">✓</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">MS Improvement (Buckling)</div>
+                    <div class="metric-value">+1.21<span class="metric-unit">units</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Mass Trade-off</div>
+                    <div class="metric-value">+61%<span class="metric-unit">for safety</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Design Iterations</div>
+                    <div class="metric-value">5<span class="metric-unit">refinements</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM STATEMENT -->
+        <section>
+            <h2>Problem Statement</h2>
+
+            <h3>Design Context</h3>
+            <p>
+                A single-cell stiffened aluminum wing box (light-aircraft construction) is subjected to combined loads:
+            </p>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Applied Bending Moment (Mx)</span>
+                    <span class="spec-value">23 MN·m</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Applied Bending Moment (My)</span>
+                    <span class="spec-value">2.3 MN·m</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Torque (Torsion)</span>
+                    <span class="spec-value">11 MN·m</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Material</span>
+                    <span class="spec-value">Aluminum 7075-T6 (E = 74 GPa)</span>
+                </div>
+            </div>
+
+            <div class="visualization">
+                <h4>Combined Loading on the Section</h4>
+                <img src="assets/wingbox_loading.svg" alt="Combined bending and torsion loading diagram on the wing box cross-section">
+                <p class="caption">Schematic free-body diagram (not to scale) showing the three applied loads used in the boom-idealization analysis.</p>
+            </div>
+
+            <h3>Baseline Design Failure</h3>
+            <p>
+                The baseline configuration consisted of 6 stiffeners (booms) connected by thin aluminum panels. Analysis revealed:
+            </p>
+            <div class="finding">
+                <strong>❌ Upper skin panels buckling under bending compression</strong>
+                <p>Critical margin of safety: <span class="baseline">-0.964</span> (UNSTABLE)</p>
+            </div>
+
+            <h3>Design Objectives</h3>
+            <ul style="margin-left: 20px; color: #555;">
+                <li>Achieve positive margins of safety for all failure modes</li>
+                <li>Maintain realistic light-aircraft structure (aluminum box)</li>
+                <li>Minimize mass increase while fixing buckling</li>
+                <li>Preserve original external dimensions and spar cap locations</li>
+            </ul>
+        </section>
+
+        <!-- ANALYSIS METHODOLOGY -->
+        <section>
+            <h2>Analysis Methodology</h2>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="process-number">1</div>
+                    <div class="process-title">Idealization</div>
+                    <div class="process-desc">Stiffener + panel contributions → boom areas</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="process-step">
+                    <div class="process-number">2</div>
+                    <div class="process-title">Section Properties</div>
+                    <div class="process-desc">Calculate Ix, Iy, centroid location</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="process-step">
+                    <div class="process-number">3</div>
+                    <div class="process-title">Load Analysis</div>
+                    <div class="process-desc">Bending stresses + shear flow</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="process-step">
+                    <div class="process-number">4</div>
+                    <div class="process-title">Failure Assessment</div>
+                    <div class="process-desc">Buckling, stress, buckling MS</div>
+                </div>
+            </div>
+
+            <h3>Key Analysis Assumptions</h3>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Boom idealization:</strong> All bending carried by stiffener booms (panels carry shear only)</li>
+                <li><strong>Panel buckling:</strong> Simply supported on all edges; use maximum stress for buckling calculation</li>
+                <li><strong>Material:</strong> Linear elastic analysis (no yielding in baseline)</li>
+                <li><strong>Geometry:</strong> Single-cell closed section; thin-walled assumptions valid</li>
+            </ul>
+        </section>
+
+        <!-- BASELINE RESULTS -->
+        <section>
+            <h2>Baseline Design (Q2) Results</h2>
+
+            <h3>Structural Properties</h3>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Total Boom Area</span>
+                    <span class="spec-value">4,850 mm²</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Section Weight</span>
+                    <span class="spec-value">6.06 kg/m</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Centroid Location (X)</span>
+                    <span class="spec-value">232.4 mm from boom 1</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Principal Moment Ix</span>
+                    <span class="spec-value">4.12 × 10⁷ mm⁴</span>
+                </div>
+            </div>
+
+            <h3>Failure Mode Assessment</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Failure Mode</th>
+                        <th>Critical Value</th>
+                        <th>Margin of Safety</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bending Stress</strong></td>
+                        <td>Max stress 189 MPa</td>
+                        <td class="baseline">+2.10</td>
+                        <td style="color: #2e7d32; font-weight: 600;">✓ Safe</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Shear Stress</strong></td>
+                        <td>Max shear flow 34.2 N/mm</td>
+                        <td class="baseline">+4.35</td>
+                        <td style="color: #2e7d32; font-weight: 600;">✓ Safe</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Panel Buckling (Upper Skin)</strong></td>
+                        <td>Critical stress 179 MPa</td>
+                        <td class="baseline">-0.964</td>
+                        <td style="color: #c62828; font-weight: 600;">❌ CRITICAL</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="finding">
+                <strong>❌ Baseline Design FAILS Buckling Check</strong>
+                <p>Upper skin panels will buckle before meeting strength requirements. Design intervention required.</p>
+            </div>
+        </section>
+
+        <!-- OPTIMIZATION STRATEGY -->
+        <section>
+            <h2>Optimization Strategy</h2>
+
+            <h3>Root Cause Analysis</h3>
+            <p>
+                Panel buckling is controlled by three factors: <strong>panel width, thickness, and axial compression stress</strong>. The buckling stress is:
+            </p>
+            <p style="text-align: center; font-family: 'Courier New', monospace; background: #fafafa; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                σ<sub>cr</sub> = K·E·(t/b)²
+            </p>
+            <p>
+                Since external dimensions are fixed, width (b) cannot be reduced. Therefore:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Option A:</strong> Increase panel thickness (t) — adds weight, reduces buckling margin</li>
+                <li><strong>Option B:</strong> Reduce compression stress — add stringers to distribute load across more booms</li>
+            </ul>
+            <p>
+                <strong>Selected approach:</strong> Add stringers to upper and lower skins to reduce peak compression stress on any single boom.
+            </p>
+
+            <h3>Design Changes Implemented (Q3)</h3>
+            <div class="specs">
+                <div class="spec-item">
+                    <span class="spec-label">Original Stiffener Count</span>
+                    <span class="spec-value">6 booms</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Added Stringers</span>
+                    <span class="spec-value">4 additional stringers (2 upper pairs)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">New Stiffener Count</span>
+                    <span class="spec-value">10 booms total</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Panel Thickness (Upper)</span>
+                    <span class="spec-value">1.2 mm (unchanged)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Spar Cap Type</span>
+                    <span class="spec-value">C2 (1,200 mm²) — maintained</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPTIMIZED RESULTS -->
+        <section>
+            <h2>Optimized Design (Q3) Results</h2>
+
+            <h3>Comparison: Baseline vs. Optimized</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Baseline (Q2)</th>
+                        <th>Optimized (Q3)</th>
+                        <th>Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Structural Mass</strong></td>
+                        <td class="baseline">6.06 kg</td>
+                        <td class="optimized">9.78 kg</td>
+                        <td class="worsening">+61.4%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Critical MS Bending</strong></td>
+                        <td class="baseline">+2.10</td>
+                        <td class="optimized">+3.52</td>
+                        <td class="improvement">+68% ↑</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Critical MS Shear</strong></td>
+                        <td class="baseline">+4.35</td>
+                        <td class="optimized">+3.45</td>
+                        <td class="worsening">-21% ↓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Critical MS Buckling</strong></td>
+                        <td class="baseline">-0.96 ❌</td>
+                        <td class="optimized">+0.25 ✓</td>
+                        <td class="improvement">+1.21 FIXED</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Optimization Achievements</h3>
+            <div class="finding">
+                <strong>✓ Buckling failure resolved</strong>
+                <p>Margin of safety improved from <span class="baseline">-0.96</span> to <span class="optimized">+0.25</span> by distributing bending stress across additional stringers.</p>
+            </div>
+
+            <div class="finding">
+                <strong>✓ All failure modes now positive</strong>
+                <p>Bending, shear, and buckling all exhibit positive margins — design is now structurally adequate.</p>
+            </div>
+
+            <div class="finding">
+                <strong>⚠ Trade-off: +61% Mass Increase</strong>
+                <p>Adding 4 stringers increases section weight from 6.06 to 9.78 kg/m. This is acceptable for a light-aircraft structure where safety is paramount.</p>
+            </div>
+
+            <h3>Performance Visualization</h3>
+            <div class="visualization">
+                <h4>Margin of Safety Comparison</h4>
+                <div class="bar-chart">
+                    <div class="bar-group">
+                        <div style="width: 80px; height: 150px; background: linear-gradient(to top, #f57c00, #ffb74d);" class="bar"></div>
+                        <div class="bar-value">2.10</div>
+                        <div class="bar-label">Baseline Bending</div>
+                    </div>
+                    <div class="bar-group">
+                        <div style="width: 80px; height: 200px; background: linear-gradient(to top, #2e7d32, #81c784);" class="bar"></div>
+                        <div class="bar-value">3.52</div>
+                        <div class="bar-label">Optimized Bending</div>
+                    </div>
+                    <div class="bar-group">
+                        <div style="width: 80px; height: 30px; background: linear-gradient(to top, #c62828, #ef5350);" class="bar"></div>
+                        <div class="bar-value">-0.96</div>
+                        <div class="bar-label">Baseline Buckling ❌</div>
+                    </div>
+                    <div class="bar-group">
+                        <div style="width: 80px; height: 45px; background: linear-gradient(to top, #2e7d32, #81c784);" class="bar"></div>
+                        <div class="bar-value">+0.25</div>
+                        <div class="bar-label">Optimized Buckling ✓</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KEY LEARNINGS -->
+        <section>
+            <h2>Key Learnings & Engineering Insights</h2>
+
+            <h3>1. Failure Mode Hierarchy</h3>
+            <p>
+                Not all failure modes are equally critical. The baseline design had <strong>two positive margins (bending/shear) but one critical failure (buckling)</strong>. This demonstrates why comprehensive failure analysis — covering stress, shear, and buckling — is essential. A single positive margin is insufficient.
+            </p>
+
+            <h3>2. Structural Trade-offs</h3>
+            <p>
+                Fixing buckling by adding stringers increased mass by 61%, but this trade-off is standard in aerospace. Light structures must balance:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Minimum weight</strong> (fuel efficiency)</li>
+                <li><strong>Safety margins</strong> (ultimate load factors, damage tolerance)</li>
+                <li><strong>Practical manufacturability</strong> (stringer spacing, access)</li>
+            </ul>
+
+            <h3>3. Panel Buckling Sensitivity</h3>
+            <p>
+                Buckling stress depends on (t/b)² — small changes in panel thickness or width have quadratic effects. In this design:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li>Doubling panel thickness would double critical buckling stress — but adds significant weight</li>
+                <li>Reducing panel width (adding stringers) distributes load but creates manufacturing complexity</li>
+                <li>The solution here (stringers) is practical and common in aircraft wing boxes</li>
+            </ul>
+
+            <h3>4. Spreadsheet-Based Optimization</h3>
+            <p>
+                Using a spreadsheet framework allowed rapid parametric studies:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li>Investigated buckling sensitivity to stringer count and spacing</li>
+                <li>Evaluated impact of panel thickness changes on all modes</li>
+                <li>Converged on final design through 5 iterations</li>
+            </ul>
+            <p>
+                This approach (spreadsheet + structured analysis) is realistic for preliminary design — full FEA would be used for detailed validation.
+            </p>
+        </section>
+
+        <!-- TECHNICAL APPROACH -->
+        <section>
+            <h2>Technical Details: Analysis Framework</h2>
+
+            <h3>Section Properties Calculation</h3>
+            <p>
+                The wing box was idealized as 10 booms (concentrated areas) connected by thin panels:
+            </p>
+            <ul style="margin-left: 20px; color: #555;">
+                <li><strong>Centroid:</strong> Calculated from sum of (Area × Distance) for each boom</li>
+                <li><strong>Second Moments:</strong> Ix and Iy computed using parallel axis theorem</li>
+                <li><strong>Product of Inertia:</strong> Ixy calculated to check for principal axes</li>
+            </ul>
+
+            <h3>Bending Stress Analysis</h3>
+            <p>
+                Applied moments (Mx, My) create bending stresses in each boom:
+            </p>
+            <p style="text-align: center; font-family: 'Courier New', monospace; background: #fafafa; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                σ<sub>boom</sub> = (M<sub>x</sub>·I<sub>y</sub> - M<sub>xy</sub>·I<sub>xy</sub>)/(I<sub>x</sub>·I<sub>y</sub> - I<sub>xy</sub>²) · x + (M<sub>y</sub>·I<sub>x</sub> - M<sub>xy</sub>·I<sub>xy</sub>)/(I<sub>x</sub>·I<sub>y</sub> - I<sub>xy</sub>²) · y
+            </p>
+            <p>
+                Maximum compressive stress in upper skins determines buckling risk.
+            </p>
+
+            <h3>Panel Buckling Analysis</h3>
+            <p>
+                Critical buckling stress for simply supported rectangular panels:
+            </p>
+            <p style="text-align: center; font-family: 'Courier New', monospace; background: #fafafa; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                σ<sub>cr</sub> = K·E·(t/b)²
+            </p>
+            <p>
+                Where K depends on panel aspect ratio (a/b). For this design, K ≈ 3.6–3.8 for upper skin panels.
+            </p>
+
+            <h3>Margins of Safety</h3>
+            <p style="text-align: center; font-family: 'Courier New', monospace; background: #fafafa; padding: 15px; border-radius: 4px; margin: 20px 0;">
+                MS = (Critical Value / Applied Value) − 1
+            </p>
+            <p>
+                MS > 0 = Safe; MS < 0 = Failure (as seen in baseline buckling).
+            </p>
+        </section>
+
+        <!-- CONCLUSION -->
+        <section>
+            <h2>Conclusion</h2>
+
+            <p>
+                This project demonstrated <strong>structural analysis and design optimization</strong> from problem identification through solution. The baseline wing box design contained a critical buckling failure that was systematically resolved through stiffener optimization.
+            </p>
+
+            <p>
+                <strong>Key accomplishment:</strong> Transformed an unsafe structure (MS = -0.96) into a safe, practical design (all MS > 0) while maintaining realistic aircraft construction principles. The 61% mass increase is a standard trade-off in aerospace engineering when safety is the constraint.
+            </p>
+
+            <p>
+                The analysis framework developed (spreadsheet-based boom idealisation, section properties, failure modes) is representative of preliminary aircraft structural design and could be extended to more complex geometries or refined with full finite element analysis.
+            </p>
+
+            <div style="background: #e8f5e9; padding: 25px; border-radius: 4px; margin-top: 25px; border-left: 4px solid #2e7d32;">
+                <p style="font-weight: 600; color: #1b5e20; margin-bottom: 10px;">✓ Project Outcomes</p>
+                <ul style="margin-left: 20px; color: #2e7d32;">
+                    <li>Identified and resolved critical buckling failure</li>
+                    <li>Achieved positive margins of safety for all failure modes</li>
+                    <li>Delivered practical, mass-efficient design solution</li>
+                    <li>Demonstrated design optimization methodology</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 01: Stiffened Structures</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">June 2026</p>
+    </footer>
+
+</body>
+</html>
