@@ -20,7 +20,7 @@ design optimisation, and a full design-build-fly aircraft project.
 | 07 | 1045 Propeller Blade CFD | CFD (rotating) | ANSYS Fluent, sliding mesh |
 | 08 | Automated FEA of a Cantilever Beam | Automation | ANSYS Mechanical, Python ACT API |
 | 09 | Transonic CFD of the ONERA M6 Wing | CFD (transonic) | ANSYS Fluent, Spalart–Allmaras |
-| 10 | PowerFly Girls Glider — Design, Build & Flight Test | Aircraft design | CATIA V5, Raymer method, fabrication |
+| 10 | Powered Glider UAV — Design, Build & Flight Test | Aircraft design | CATIA V5, Raymer method, fabrication |
 
 ---
 
