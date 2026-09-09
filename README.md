@@ -1,8 +1,8 @@
 # Widad Elyamani — Aerospace Engineering Portfolio
 
-A static portfolio of eleven engineering case studies: CFD, structural FEA, composites,
-design optimisation, a full design-build-fly aircraft project, and a first-order concept
-feasibility study.
+A static portfolio of twelve engineering case studies: CFD, structural FEA, composites,
+design optimisation, a design-build-fly aircraft project, a first-order concept feasibility
+study, and a satellite deployment-mechanism design.
 
 **Live site:** https://Widad-Elyamani.github.io/portfolio/
 
@@ -23,6 +23,7 @@ feasibility study.
 | 09 | Transonic CFD of the ONERA M6 Wing | CFD (transonic) | ANSYS Fluent, Spalart–Allmaras |
 | 10 | Powered Glider UAV — Design, Build & Flight Test | Aircraft design | CATIA V5, Raymer method, fabrication |
 | 11 | Rangola — Feasibility Study of a Towed Passenger Airglider | Concept feasibility | Analytical, first-order physics |
+| 12 | 6U CubeSat Solar Array — Deployment Mechanism | Satellite mechanism | CATIA V5, DMU Kinematics |
 
 ---
 
@@ -30,7 +31,7 @@ feasibility study.
 
 ```
 index.html                  Gallery page — entry point
-project_01…11_*.html        Individual case studies
+project_01…12_*.html        Individual case studies
 assets/                     All images (relative paths only)
 404.html                    Fallback page
 .nojekyll                   Tells GitHub Pages to skip Jekyll processing
