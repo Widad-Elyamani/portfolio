@@ -22,20 +22,21 @@
         header {
             position: relative;
             background: #0A2546;
+            background-image: linear-gradient(150deg, #16406F 0%, #0A2546 55%, #071B34 100%);
             color: white;
             padding: 100px 40px 90px;
             text-align: center;
             overflow: hidden;
-            isolation: isolate;
         }
 
         /* Live computational mesh — the structure behind every project here */
         #meshCanvas {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
+            z-index: 0;
             display: block;
         }
 
@@ -43,12 +44,24 @@
         header::after {
             content: "";
             position: absolute;
-            inset: 0;
-            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
             background: radial-gradient(ellipse 62% 78% at 50% 46%,
-                        rgba(10,37,70,0.93) 0%,
-                        rgba(10,37,70,0.72) 45%,
-                        rgba(10,37,70,0.30) 100%);
+                        rgba(10,37,70,0.92) 0%,
+                        rgba(10,37,70,0.70) 45%,
+                        rgba(10,37,70,0.28) 100%);
+        }
+
+        /* Text sits above both mesh and vignette */
+        header h1,
+        header .subtitle,
+        header .tagline {
+            position: relative;
+            z-index: 2;
         }
 
         header h1 {
@@ -823,7 +836,7 @@
                 var d  = Math.sqrt(dx * dx + dy * dy);
                 if (d < LINK) {
                     // Nearer nodes get brighter edges — reads as mesh density
-                    ctx.strokeStyle = 'rgba(120,175,235,' + (0.30 * (1 - d / LINK)).toFixed(3) + ')';
+                    ctx.strokeStyle = 'rgba(125,180,240,' + (0.55 * (1 - d / LINK)).toFixed(3) + ')';
                     ctx.lineWidth = 1;
                     ctx.beginPath();
                     ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -834,7 +847,7 @@
         }
 
         for (var k = 0; k < nodes.length; k++) {
-            ctx.fillStyle = 'rgba(165,205,245,0.55)';
+            ctx.fillStyle = 'rgba(175,215,255,0.85)';
             ctx.beginPath();
             ctx.arc(nodes[k].x, nodes[k].y, nodes[k].r, 0, Math.PI * 2);
             ctx.fill();
