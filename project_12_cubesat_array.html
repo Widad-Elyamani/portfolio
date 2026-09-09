@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 12: 6U CubeSat Solar Array — Deployment Mechanism Design</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- topnav -->
+    <nav style="position:sticky; top:0; z-index:1000; background:#ffffff; border-bottom:1px solid #e0e6ed; padding:12px 40px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <a href="index.html" style="color:#133D6E; text-decoration:none; font-weight:600; font-size:0.95em;">← Back to Portfolio</a>
+    </nav>
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 12
+        </div>
+        <h1>6U CubeSat Solar Array — Deployment Mechanism Design</h1>
+        <p>Worm-Gear Root Hinge | Two-Stage 0→180° Deployment | CATIA V5 DMU Kinematics</p>
+    </header>
+
+    <img src="assets/cubesat_array_hero.jpg" alt="CATIA model of a 6U CubeSat with its solar array partly deployed — worm-gear hinges at the body drive the panel wings out on both sides" class="hero-image" style="max-height:340px; object-fit:contain; background:#3a3f6b;">
+
+    <div class="container">
+
+        <!-- OVERVIEW -->
+        <section>
+            <h2>Overview</h2>
+            <p>
+                A 6U CubeSat has to carry its solar panels folded flat against the body through launch, then deploy them reliably in orbit to expose the cells to the sun. This project designs the <strong>hinge and deployment mechanism</strong> that does that: a self-locking <strong>worm-gear root hinge</strong> that swings the folded panel stack clear of the spacecraft, followed by spring-loaded <strong>knuckle hinges</strong> that unfold the panels into a flat wing. The complete mechanism was modelled in CATIA V5 and its motion validated with DMU Kinematics.
+            </p>
+            <p>
+                The design choice that drives everything is the worm gear. A worm-and-wheel is <strong>self-locking</strong> — it cannot be back-driven — so the array holds any commanded angle with no power and resists disturbance torques, while the high reduction ratio makes deployment slow and controlled rather than a spring-loaded snap. That single property removes the need for a separate latch or brake at the root.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Deployment</div>
+                    <div class="metric-value">0→180°<span class="metric-unit">two-stage</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Worm Drive</div>
+                    <div class="metric-value">40:1<span class="metric-unit">self-locking</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Worm Wheel</div>
+                    <div class="metric-value">40T<span class="metric-unit">module 1 mm</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Folded Target</div>
+                    <div class="metric-value">12<span class="metric-unit">mm stack</span></div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Design intent.</strong>
+                <p>Fold a multi-panel array into a ~12 mm stack for launch, restrain it with hold-down / release mechanisms, then deploy it in two controlled stages — a self-locking worm-gear root hinge (0→90°) followed by spring-loaded knuckle hinges that unfold the panels flat (to a 180° span) — with the whole motion proven kinematically before any hardware.</p>
+            </div>
+        </section>
+
+        <!-- REQUIREMENTS -->
+        <section>
+            <h2>Design Requirements</h2>
+            <p>The mechanism was designed against a set of system requirements for the folded stack, the restraint system and the environment it has to survive:</p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Folded stack thickness</span><span class="spec-value">≈ 12 mm target (in line with current state of the art)</span></div>
+                <div class="spec-item"><span class="spec-label">Hold-down / release (HDRM)</span><span class="spec-value">Two layouts evaluated — a single central point, and two points on the panel centreline</span></div>
+                <div class="spec-item"><span class="spec-label">Inter-panel supports</span><span class="spec-value">Arranged so that no two panel surfaces contact each other when stowed</span></div>
+                <div class="spec-item"><span class="spec-label">Component survivability</span><span class="spec-value">PCB-mounted SMD parts to withstand ≈ 100 g (soldered-joint limit)</span></div>
+            </div>
+            <p>The two HDRM layouts matter because a hold-down point sets where the launch loads enter the folded stack; comparing a single central restraint against two distributed points is what a structural qualification of the mechanics would trade off.</p>
+        </section>
+
+        <!-- MECHANISM -->
+        <section>
+            <h2>The Worm-Gear Root Hinge</h2>
+            <p>
+                At the root of each panel wing, a worm (a threaded screw shaft) meshes with a worm wheel fixed to the hinge axis. Rotating the worm rotates the wheel — and therefore the panel — through a large reduction, so a full turn of the worm produces only a small, controlled swing of the array. Because the mesh is self-locking, the array stays put wherever it stops, with no holding torque required.
+            </p>
+
+            <div class="visualization">
+                <h4>Worm meshing with the worm wheel at the panel root</h4>
+                <img src="assets/cubesat_worm_hinge.jpg" alt="CATIA close-up of the worm — a threaded screw shaft — meshing with the 40-tooth worm wheel fixed at the corner of a solar panel">
+                <p class="caption">The worm (top) drives the worm wheel at the corner of the panel. This is the root hinge: turning the worm swings the whole folded stack away from the spacecraft body. The self-locking mesh means the wing holds position at any angle without a separate latch.</p>
+            </div>
+
+            <p>The worm wheel was built as a parametric involute gear in CATIA, so its geometry is defined by the module and tooth count and the rest follows by formula:</p>
+            <p style="margin: 15px 40px; color: #f57c00; font-family: 'Courier New', monospace;">
+                R = M·Z / 2 = 20 mm &nbsp;·&nbsp; R<sub>a</sub> = R + M = 21 mm &nbsp;·&nbsp; R<sub>f</sub> = R − 1.25·M = 18.75 mm
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Module (M)</span><span class="spec-value">1 mm</span></div>
+                <div class="spec-item"><span class="spec-label">Teeth (Z)</span><span class="spec-value">40</span></div>
+                <div class="spec-item"><span class="spec-label">Pitch radius (R)</span><span class="spec-value">20 mm</span></div>
+                <div class="spec-item"><span class="spec-label">Addendum radius (Rₐ)</span><span class="spec-value">21 mm</span></div>
+                <div class="spec-item"><span class="spec-label">Root radius (R_f)</span><span class="spec-value">18.75 mm</span></div>
+                <div class="spec-item"><span class="spec-label">Reduction (single-start worm)</span><span class="spec-value">40 : 1</span></div>
+            </div>
+        </section>
+
+        <!-- DEPLOYMENT -->
+        <section>
+            <h2>Two-Stage Deployment</h2>
+            <p>
+                Deployment begins when the burn-wire hold-down / release mechanisms free the folded stack. From there the array opens in two stages: the <strong>worm-gear root hinge</strong> first rotates the stack about 90° clear of the body, then the <strong>spring-loaded knuckle hinges</strong> between panels unfold them flat, extending the array to its full 180° span. A worm hinge sits on each side of each panel so the load is shared symmetrically across the wing.
+            </p>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:16px; margin:22px 0;">
+                <div style="background:#f7f9fc; border-radius:6px; padding:10px;">
+                    <img src="assets/cubesat_deploy_stowed.jpg" alt="Solar panels folded flat against the CubeSat body, stowed for launch" style="width:100%; border-radius:4px; display:block;">
+                    <p class="caption" style="text-align:center; margin-top:8px;"><strong>1 — Stowed (0°)</strong><br>Panels folded flat against the body, restrained by the HDRMs.</p>
+                </div>
+                <div style="background:#f7f9fc; border-radius:6px; padding:10px;">
+                    <img src="assets/cubesat_deploy_mid.jpg" alt="Worm-gear root hinge has rotated the folded stack about 90 degrees away from the body" style="width:100%; border-radius:4px; display:block;">
+                    <p class="caption" style="text-align:center; margin-top:8px;"><strong>2 — Root hinge (~90°)</strong><br>The worm gear swings the stack clear of the spacecraft.</p>
+                </div>
+                <div style="background:#f7f9fc; border-radius:6px; padding:10px;">
+                    <img src="assets/cubesat_deploy_deployed.jpg" alt="Both solar array wings fully unfolded flat, extended symmetrically from the CubeSat body" style="width:100%; border-radius:4px; display:block;">
+                    <p class="caption" style="text-align:center; margin-top:8px;"><strong>3 — Deployed (180°)</strong><br>Knuckle hinges unfold the panels into a flat wing.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- KINEMATICS -->
+        <section>
+            <h2>Kinematic Validation in CATIA V5</h2>
+            <p>
+                The whole assembly was rebuilt as a kinematic mechanism in CATIA V5 DMU Kinematics to prove the motion before committing to hardware. The worm/wheel pair is a gear joint, the knuckles are revolute joints, and the inter-panel connection hardware is tied in with rigid joint chaining. The degrees of freedom were balanced down to a single driving command per stage, so the deployment plays back from one input.
+            </p>
+
+            <div class="visualization">
+                <h4>DMU Kinematics — mechanism tree and deployment commands</h4>
+                <img src="assets/cubesat_dmu_kinematics.jpg" alt="CATIA DMU Kinematics environment showing the mechanism tree, two kinematic mechanisms and their command sliders driving the worm gears on the CubeSat body">
+                <p class="caption">The DMU Kinematics setup: driving commands (worm rotation and hinge angle) on two mechanisms, with the gears meshed on the spacecraft corners. Playing the commands drives the full deployment, which is used to check the range of motion and clearances.</p>
+            </div>
+
+            <p>
+                A specific thing the simulation checks is <strong>clearance</strong>: because a stated requirement is that no two panel surfaces touch when stowed, the kinematic model is used to confirm the folded stack and its inter-panel supports keep the surfaces apart through the whole stow-and-deploy path. Getting the mechanism to solve cleanly took some troubleshooting — gear-joint definition, balancing the degrees of freedom, sorting out angle-sign conventions, and chaining the rigid joints for the connection hardware.
+            </p>
+        </section>
+
+        <!-- DELIVERABLES -->
+        <section>
+            <h2>Deliverables</h2>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">CAD</span><span class="spec-value">CATIA V5 assembly with a parametric worm-and-wheel root hinge</span></div>
+                <div class="spec-item"><span class="spec-label">Kinematics</span><span class="spec-value">DMU Kinematics model of the two-stage deployment, driven from single commands</span></div>
+                <div class="spec-item"><span class="spec-label">Visualization</span><span class="spec-value">Self-contained interactive 3D (Three.js) walkthrough of the deployment sequence</span></div>
+            </div>
+        </section>
+
+        <!-- STATUS / NEXT STEPS -->
+        <section>
+            <h2>Status &amp; Next Steps</h2>
+            <div style="background:#fff8e1; border-left:4px solid #f57c00; padding:20px 25px; border-radius:4px;">
+                <p style="font-weight:600; color:#e65100; margin-bottom:8px;">Design &amp; kinematics stage — structural qualification is the next phase</p>
+                <p style="color:#5c4a1a; font-size:0.95em;">This work covers the mechanism design and the kinematic validation of the deployment. The next phase is the structural qualification of the mechanics: modal and random-vibration / quasi-static FEA of the stowed and deployed configurations under the launch load cases, run for both HDRM layouts (single central point vs two centreline points) and checked against the ≈ 100 g component limit. Gear, hinge and HDRM sizing shown here is preliminary and would be confirmed against those load cases. The figures on this page are CAD and kinematic results, not structural analysis.</p>
+            </div>
+        </section>
+
+        <!-- OUTCOMES -->
+        <section>
+            <div style="background:#e8f5e9; padding:25px; border-radius:4px; border-left:4px solid #2e7d32;">
+                <p style="font-weight:600; color:#1b5e20; margin-bottom:10px;">✓ Project Outcomes</p>
+                <ul style="margin-left:20px; color:#2e7d32;">
+                    <li>Designed a self-locking worm-gear root hinge (40:1) with spring-loaded knuckle hinges for a compact two-stage 0→180° solar-array deployment on a 6U CubeSat.</li>
+                    <li>Parametrically modelled the worm-and-wheel in CATIA V5 (module 1 mm, 40 teeth, 20 mm pitch radius) so the geometry is driven by formula.</li>
+                    <li>Built and ran a full DMU Kinematics simulation, balancing the degrees of freedom to a single driving command per stage.</li>
+                    <li>Used the kinematic model to verify range of motion and clearance — keeping panel surfaces from contacting through the stow-and-deploy path.</li>
+                    <li>Framed two hold-down / release layouts (single central vs two centreline points) as the input to a follow-on structural qualification.</li>
+                    <li>Delivered CATIA CAD, the kinematic model, and an interactive 3D visualization of the deployment.</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 12: 6U CubeSat Solar Array — Deployment Mechanism Design</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">2026</p>
+    </footer>
+
+</body>
+</html>
