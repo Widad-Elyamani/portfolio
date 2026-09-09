@@ -103,7 +103,8 @@
         }
 
         .project-card {
-            display: block;
+            display: flex;
+            flex-direction: column;
             position: relative;
             text-decoration: none;
             color: inherit;
@@ -111,21 +112,25 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
 
         .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(19, 61, 110, 0.16);
         }
 
-        /* Whole card is clickable via its project link — no JavaScript needed */
-        .project-link::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: 1;
+        /* Keyboard accessibility — visible focus ring for tab navigation */
+        .project-card:focus-visible {
+            outline: 3px solid #3D6FAB;
+            outline-offset: 3px;
+        }
+
+        /* Pressed state — gives tactile feedback on click */
+        .project-card:active {
+            transform: translateY(-2px);
+            transition-duration: 0.08s;
         }
 
         .card-image {
@@ -133,6 +138,12 @@
             height: 170px;
             object-fit: cover;
             display: block;
+            transition: transform 0.45s ease;
+        }
+
+        /* Image lifts slightly when hovering anywhere on the card */
+        .project-card:hover .card-image {
+            transform: scale(1.04);
         }
 
         .project-header {
@@ -163,6 +174,14 @@
 
         .project-content {
             padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Pushes the View Case Study line to the bottom so it aligns across a row */
+        .project-content .project-link {
+            margin-top: auto;
         }
 
         .project-desc {
@@ -194,12 +213,14 @@
             text-decoration: none;
             font-weight: 600;
             font-size: 0.9em;
-            transition: all 0.3s;
+            transition: color 0.3s, transform 0.3s;
         }
 
-        .project-link:hover {
+        /* Arrow reacts to hovering ANYWHERE on the card, not just on these words.
+           This is what makes the whole card read as clickable. */
+        .project-card:hover .project-link {
             color: #3D6FAB;
-            transform: translateX(4px);
+            transform: translateX(5px);
         }
 
         /* Status Badge */
@@ -634,7 +655,7 @@
             <a href="tel:+212691730616">+212 691-730616</a> · 
             <a href="https://www.linkedin.com/in/widad-elyamani-757839220/" target="_blank" rel="noopener">LinkedIn</a>
         </p>
-        <p style="margin-top: 20px; font-size: 0.9em;">Last updated: June 2026</p>
+        <p style="margin-top: 20px; font-size: 0.9em;">Last updated: September 2026</p>
     </footer>
 
 </body>
