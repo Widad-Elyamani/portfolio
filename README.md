@@ -3,8 +3,7 @@
 A static portfolio of ten engineering case studies: CFD, structural FEA, composites,
 design optimisation, and a full design-build-fly aircraft project.
 
-**Live site:** https://USERNAME.github.io/portfolio/
-*(replace `USERNAME` once GitHub Pages is enabled)*
+**Live site:** https://Widad-Elyamani.github.io/portfolio/
 
 ---
 
