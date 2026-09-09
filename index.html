@@ -20,32 +20,59 @@
 
         /* Header / Hero */
         header {
-            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            position: relative;
+            background: #0A2546;
             color: white;
-            padding: 80px 40px;
+            padding: 100px 40px 90px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        /* Live computational mesh — the structure behind every project here */
+        #meshCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            display: block;
+        }
+
+        /* Radial vignette keeps the name legible over the mesh */
+        header::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(ellipse 62% 78% at 50% 46%,
+                        rgba(10,37,70,0.93) 0%,
+                        rgba(10,37,70,0.72) 45%,
+                        rgba(10,37,70,0.30) 100%);
         }
 
         header h1 {
-            font-size: 2.8em;
+            font-size: clamp(2.4rem, 6vw, 3.6rem);
             font-weight: 300;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
+            margin-bottom: 14px;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
         }
 
         header .subtitle {
-            font-size: 1.2em;
+            font-size: clamp(1.05rem, 2.2vw, 1.3rem);
             font-weight: 400;
-            opacity: 0.9;
-            margin-bottom: 20px;
+            color: #9DC0E8;
+            margin-bottom: 22px;
+            letter-spacing: 0.01em;
         }
 
         header .tagline {
-            font-size: 0.95em;
-            opacity: 0.85;
-            max-width: 600px;
+            font-size: 0.97em;
+            opacity: 0.82;
+            max-width: 46ch;
             margin: 0 auto;
+            line-height: 1.65;
         }
 
         /* Navigation */
@@ -268,6 +295,83 @@
             text-decoration: underline;
         }
 
+        /* Discipline filter — twelve projects is too many to scan linearly */
+        .filter-bar[hidden] {
+            display: none;
+        }
+
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: -10px 0 40px;
+        }
+
+        .filter-btn {
+            font: inherit;
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #44607F;
+            background: #fff;
+            border: 1px solid #dbe3ec;
+            border-radius: 30px;
+            padding: 9px 20px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: #3D6FAB;
+            color: #133D6E;
+        }
+
+        .filter-btn:focus-visible {
+            outline: 3px solid #3D6FAB;
+            outline-offset: 2px;
+        }
+
+        .filter-btn[aria-pressed="true"] {
+            background: #133D6E;
+            border-color: #133D6E;
+            color: #fff;
+        }
+
+        .filter-btn .count {
+            opacity: 0.55;
+            margin-left: 7px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Filtering answers a click, so the motion earns its place */
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease,
+                        opacity 0.28s ease;
+        }
+
+        .project-card.is-hidden {
+            display: none;
+        }
+
+        .project-card.is-entering {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .filter-empty {
+            text-align: center;
+            color: #7b8794;
+            padding: 40px 0;
+        }
+
+        /* Anyone who prefers less motion gets a still mesh and no transitions */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             header h1 {
@@ -292,9 +396,10 @@
 <body>
 
     <header>
+        <canvas id="meshCanvas" aria-hidden="true"></canvas>
         <h1>Widad Elyamani</h1>
         <p class="subtitle">Aerospace Engineer</p>
-        <p class="tagline">Specialized in FEA/CFD Simulation, Composite Structures & Structural Analysis</p>
+        <p class="tagline">Specialized in FEA/CFD Simulation, Composite Structures &amp; Structural Analysis</p>
     </header>
 
     <nav>
@@ -308,10 +413,18 @@
     <div class="container">
         <h2 class="section-title" id="projects">Portfolio Projects</h2>
 
+        <div class="filter-bar" role="group" aria-label="Filter projects by discipline" hidden>
+            <button class="filter-btn" data-filter="all" aria-pressed="true">All<span class="count">12</span></button>
+            <button class="filter-btn" data-filter="cfd" aria-pressed="false">CFD<span class="count">4</span></button>
+            <button class="filter-btn" data-filter="structures" aria-pressed="false">Structures &amp; FEA<span class="count">4</span></button>
+            <button class="filter-btn" data-filter="composites" aria-pressed="false">Composites<span class="count">1</span></button>
+            <button class="filter-btn" data-filter="aircraft" aria-pressed="false">Aircraft &amp; Mechanisms<span class="count">3</span></button>
+        </div>
+
         <div class="projects-grid">
 
             <!-- PROJECT 1: Stiffened Structures -->
-            <a class="project-card" href="project_01_stiffened_structures.html">
+            <a class="project-card" data-category="structures" href="project_01_stiffened_structures.html">
                 <img src="assets/wingbox_comparison.svg" alt="Wing box cross-section comparison thumbnail" class="card-image" style="background:#fafbfc; object-fit:contain;">
                 <div class="project-header">
                     <div class="project-number">Project 01</div>
@@ -337,7 +450,7 @@
             </a>
 
             <!-- PROJECT 2: NACA 0015 Airfoil CFD -->
-            <a class="project-card" href="project_02_cfd_naca0015.html">
+            <a class="project-card" data-category="cfd" href="project_02_cfd_naca0015.html">
                 <img src="assets/naca_cover_streamlines.jpg" alt="NACA 0015 streamlines thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 02</div>
@@ -363,7 +476,7 @@
             </a>
 
             <!-- PROJECT 3: ARN2 Convergent Nozzle -->
-            <a class="project-card" href="project_03_arn2_nozzle.html">
+            <a class="project-card" data-category="cfd" href="project_03_arn2_nozzle.html">
                 <img src="assets/arn2_cover_mach.png" alt="ARN2 nozzle Mach contour thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 03</div>
@@ -389,7 +502,7 @@
             </a>
 
             <!-- PROJECT 4: Structural Design Steel Shed -->
-            <a class="project-card" href="project_04_steel_shed.html">
+            <a class="project-card" data-category="structures" href="project_04_steel_shed.html">
                 <img src="assets/shed_frame_elevation.svg" alt="Steel shed frame elevation thumbnail" class="card-image" style="background:#fafbfc; object-fit:contain;">
                 <div class="project-header">
                     <div class="project-number">Project 04</div>
@@ -415,7 +528,7 @@
             </a>
 
             <!-- PROJECT 5: Bicycle Crank Optimization -->
-            <a class="project-card" href="project_05_crank_optimization.html">
+            <a class="project-card" data-category="structures" href="project_05_crank_optimization.html">
                 <img src="assets/crank_optimised_stress.jpg" alt="Optimised crank arm stress contour thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 05</div>
@@ -442,7 +555,7 @@
             </a>
 
             <!-- PROJECT 6: Alpha Jet Composite Radome (PFE, Airbus) -->
-            <a class="project-card" href="project_06_alphajet_radome.html">
+            <a class="project-card" data-category="composites" href="project_06_alphajet_radome.html">
                 <img src="assets/radome_structural_moment.jpg" alt="Alpha Jet composite radome FEA thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 06</div>
@@ -470,7 +583,7 @@
             </a>
 
             <!-- PROJECT 7: 1045 Propeller CFD -->
-            <a class="project-card" href="project_07_prop1045_cfd.html">
+            <a class="project-card" data-category="cfd" href="project_07_prop1045_cfd.html">
                 <img src="assets/prop_hero_render.jpg" alt="1045 propeller CAD render thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 07</div>
@@ -496,7 +609,7 @@
             </a>
 
             <!-- PROJECT 8: Automated Cantilever FEA -->
-            <a class="project-card" href="project_08_cantilever_fea.html">
+            <a class="project-card" data-category="structures" href="project_08_cantilever_fea.html">
                 <img src="assets/beam_deformation.jpg" alt="Cantilever beam deformation contour thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 08</div>
@@ -522,7 +635,7 @@
             </a>
 
             <!-- PROJECT 9: ONERA M6 Transonic CFD -->
-            <a class="project-card" href="project_09_onera_m6.html">
+            <a class="project-card" data-category="cfd" href="project_09_onera_m6.html">
                 <img src="assets/onera_pressure_contour.jpg" alt="ONERA M6 pressure contour thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 09</div>
@@ -549,7 +662,7 @@
             </a>
 
             <!-- PROJECT 10: Powered Glider UAV -->
-            <a class="project-card" href="project_10_uav_glider.html">
+            <a class="project-card" data-category="aircraft" href="project_10_uav_glider.html">
                 <img src="assets/glider_finished.jpg" alt="Powered Glider UAV thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 10</div>
@@ -576,7 +689,7 @@
             </a>
 
             <!-- PROJECT 11: Rangola Airglider -->
-            <a class="project-card" href="project_11_rangola.html">
+            <a class="project-card" data-category="aircraft" href="project_11_rangola.html">
                 <img src="assets/rangola_airglider_concept.jpg" alt="Rangola airglider concept thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 11</div>
@@ -603,7 +716,7 @@
             </a>
 
             <!-- PROJECT 12: 6U CubeSat Solar Array Deployment Mechanism -->
-            <a class="project-card" href="project_12_cubesat_array.html">
+            <a class="project-card" data-category="aircraft" href="project_12_cubesat_array.html">
                 <img src="assets/cubesat_array_hero.jpg" alt="6U CubeSat solar array deployment mechanism thumbnail" class="card-image">
                 <div class="project-header">
                     <div class="project-number">Project 12</div>
@@ -657,6 +770,141 @@
         </p>
         <p style="margin-top: 20px; font-size: 0.9em;">Last updated: September 2026</p>
     </footer>
+
+<script>
+/* ------------------------------------------------------------------
+   Hero mesh — an unstructured triangulated grid, the same kind of
+   discretisation every project on this page is built on. Nodes drift
+   slowly; edges are drawn between neighbours within a radius, so the
+   connectivity keeps reforming the way a remeshed domain does.
+   ------------------------------------------------------------------ */
+(function () {
+    var canvas = document.getElementById('meshCanvas');
+    if (!canvas || !canvas.getContext) return;
+
+    var ctx    = canvas.getContext('2d');
+    var still  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var nodes  = [];
+    var W = 0, H = 0, LINK = 0;
+
+    function build() {
+        var rect = canvas.getBoundingClientRect();
+        var dpr  = Math.min(window.devicePixelRatio || 1, 2);
+        W = rect.width; H = rect.height;
+        canvas.width  = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // Node count scales with area so density stays even on any screen
+        var target = Math.round((W * H) / 13000);
+        target = Math.max(28, Math.min(target, 105));
+        LINK = Math.max(108, Math.min(W / 7.5, 170));
+
+        nodes = [];
+        for (var i = 0; i < target; i++) {
+            nodes.push({
+                x:  Math.random() * W,
+                y:  Math.random() * H,
+                vx: (Math.random() - 0.5) * 0.16,
+                vy: (Math.random() - 0.5) * 0.16,
+                r:  Math.random() * 1.4 + 0.7
+            });
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Edges first, so nodes sit on top of them
+        for (var i = 0; i < nodes.length; i++) {
+            for (var j = i + 1; j < nodes.length; j++) {
+                var dx = nodes[i].x - nodes[j].x;
+                var dy = nodes[i].y - nodes[j].y;
+                var d  = Math.sqrt(dx * dx + dy * dy);
+                if (d < LINK) {
+                    // Nearer nodes get brighter edges — reads as mesh density
+                    ctx.strokeStyle = 'rgba(120,175,235,' + (0.30 * (1 - d / LINK)).toFixed(3) + ')';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        for (var k = 0; k < nodes.length; k++) {
+            ctx.fillStyle = 'rgba(165,205,245,0.55)';
+            ctx.beginPath();
+            ctx.arc(nodes[k].x, nodes[k].y, nodes[k].r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function step() {
+        for (var i = 0; i < nodes.length; i++) {
+            var n = nodes[i];
+            n.x += n.vx;
+            n.y += n.vy;
+            if (n.x < 0 || n.x > W) n.vx *= -1;
+            if (n.y < 0 || n.y > H) n.vy *= -1;
+        }
+        draw();
+        requestAnimationFrame(step);
+    }
+
+    build();
+    draw();
+    if (!still) requestAnimationFrame(step);
+
+    var t;
+    window.addEventListener('resize', function () {
+        clearTimeout(t);
+        t = setTimeout(function () { build(); draw(); }, 180);
+    });
+})();
+
+
+/* ------------------------------------------------------------------
+   Discipline filter. Motion here answers a click, so it earns its place.
+   ------------------------------------------------------------------ */
+(function () {
+    var buttons = Array.prototype.slice.call(document.querySelectorAll('.filter-btn'));
+    var cards   = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+    var grid    = document.querySelector('.projects-grid');
+    if (!buttons.length || !cards.length) return;
+
+    function apply(filter) {
+        cards.forEach(function (card) {
+            var match = filter === 'all' || card.dataset.category === filter;
+            if (match) {
+                card.classList.remove('is-hidden');
+                card.classList.add('is-entering');
+                // Next frame, drop the entering class so it transitions in
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        card.classList.remove('is-entering');
+                    });
+                });
+            } else {
+                card.classList.add('is-hidden');
+            }
+        });
+    }
+
+    buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            buttons.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+            btn.setAttribute('aria-pressed', 'true');
+            apply(btn.dataset.filter);
+        });
+    });
+
+    // No JS, no filter bar — so only reveal it once the handlers are wired
+    var bar = document.querySelector('.filter-bar');
+    if (bar) bar.hidden = false;
+})();
+</script>
 
 </body>
 </html>
