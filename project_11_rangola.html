@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 11: Rangola — Feasibility Study of a Towed Passenger Airglider</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 11
+        </div>
+        <h1>Rangola — Feasibility Study of a Towed Passenger Airglider</h1>
+        <p>First-Order Physics | Multi-Modal Trade Study | Concept &amp; Tow-Vehicle Selection</p>
+    </header>
+
+    <img src="assets/rangola_airglider_concept.jpg" alt="Conceptual sketch of the Rangola airglider — slender composite fuselage, four seats under a canopy, high-aspect-ratio NACA 4412 wing, T-tail and nose tether bridle" class="hero-image" style="max-height:340px; object-fit:contain; background:#eaf1fa;">
+
+    <div class="container">
+
+        <!-- EXECUTIVE SUMMARY -->
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                Rangola lifts passengers out of the water into an unpowered fixed-wing <strong>airglider</strong>, towed just above the surface by a low-drag <strong>electric ocean glider</strong> through a tension-controlled tether. All heavy hardware — battery, motor, controls — stays on the water vehicle, so the cabin is quiet, smooth, panoramic and carries no high-energy battery. This is a physics-based, first-order (back-of-the-envelope) feasibility evaluation of the concept, benchmarked against a helicopter, a planing speedboat, a hydrofoil ferry and a wing-in-ground-effect (WIG) seaglider on one consistent 25&nbsp;kn / 100&nbsp;km / 4-passenger basis.
+            </p>
+            <p>
+                The headline result is that <strong>the tow vehicle — not the airglider — dominates the design</strong>: roughly three-quarters of total system drag is hydrodynamic. The recommended configuration is an <strong>electric wave-piercing catamaran</strong> (≈&nbsp;87&nbsp;kWh/100&nbsp;km), which captures most of a hydrofoil's efficiency using only passive, proven naval architecture — avoiding the maintenance burden that sank the hydrofoil-ferry industry. Rangola does not win on raw energy; it wins on ride quality, simplicity, safety and zero emissions.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">System Energy</div>
+                    <div class="metric-value">87<span class="metric-unit">kWh / 100 km (recommended)</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Per Passenger</div>
+                    <div class="metric-value">22<span class="metric-unit">kWh / 100 km</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Hydrodynamic Drag</div>
+                    <div class="metric-value">~80%<span class="metric-unit">of total system drag</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Airborne Mass</div>
+                    <div class="metric-value">750<span class="metric-unit">kg · L/D ≈ 20</span></div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Verdict — conditionally promising.</strong>
+                <p>Pursue Rangola for experience, emissions and operational simplicity, not for record energy efficiency. It is physically sound and occupies a distinct premium-experience niche for short (10–60&nbsp;km) coastal and inter-island routes — even in a world where both the WIG and the hydrofoil succeed.</p>
+            </div>
+        </section>
+
+        <!-- CONCEPT -->
+        <section>
+            <h2>The Concept &amp; How It Works</h2>
+            <p>
+                Sea water is ≈&nbsp;840× denser than air, so any hull pushing through it pays a large drag penalty that limits electric range and dictates a rough ride. Rangola's answer is to <strong>put the passengers in the air and leave the machinery on the water</strong>. The ocean glider leads; the airglider trails behind and above it, exactly like a sailplane on aero-tow or a water-skier behind a boat. The link is a single tension-controlled tether running from a raised stern pylon to the airglider's nose bridle.
+            </p>
+
+            <div class="visualization">
+                <h4>System arrangement and force balance</h4>
+                <img src="assets/rangola_force_balance.jpg" alt="Force-balance schematic — ocean glider leads with thrust and large hydrodynamic drag; airglider trails above with lift, weight and small aero drag; tether tension T acts at line angle theta">
+                <p class="caption">The ocean glider carries all thrust and takes the large hydrodynamic drag; the airglider only balances its own weight against lift and a small aero drag. <strong>The tow point sits at the stern</strong> — a bow tow would pull the boat from its front and make it weathervane (directionally unstable). The small vertical component of tether tension even off-loads a little hull weight.</p>
+            </div>
+
+            <p>
+                <strong>Market.</strong> Short coastal and inter-island routes of 10–100&nbsp;km — Mediterranean and Greek-island hops, Caribbean and Maldives resort shuttles, fjord tourism, premium airport-to-resort transfers — where a quiet, smooth, panoramic, zero-emission ride is the product rather than outright speed. The natural customer is a premium operator running fast boats or helicopters today who wants a calmer, cleaner, cheaper-to-operate alternative.
+            </p>
+        </section>
+
+        <!-- METHOD -->
+        <section>
+            <h2>Method &amp; Common Assumptions</h2>
+            <p>Every mode is reduced to steady cruise, where thrust balances drag and lift balances weight. Each craft's resistance is then its weight divided by an effective lift-to-drag ratio, converted to power and energy:</p>
+            <p style="margin: 15px 40px; color: #f57c00; font-family: 'Courier New', monospace;">
+                D = W / (L/D)<sub>eff</sub> &nbsp;&nbsp;·&nbsp;&nbsp; P = D · V &nbsp;&nbsp;·&nbsp;&nbsp; E = D · s / η
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Comparison speed</span><span class="spec-value">25 kn = 12.86 m/s (apples-to-apples)</span></div>
+                <div class="spec-item"><span class="spec-label">Distance basis</span><span class="spec-value">100 km (≈ 2.16 h at 25 kn)</span></div>
+                <div class="spec-item"><span class="spec-label">Payload</span><span class="spec-value">4 passengers + light bags ≈ 340 kg</span></div>
+                <div class="spec-item"><span class="spec-label">Air / sea-water density</span><span class="spec-value">1.225 / 1025 kg/m³ (≈ 837×)</span></div>
+                <div class="spec-item"><span class="spec-label">Airborne mass</span><span class="spec-value">≈ 750 kg (empty 350–450 kg, no engine/battery)</span></div>
+                <div class="spec-item"><span class="spec-label">Wing</span><span class="spec-value">span 16–18 m, AR ≈ 14, NACA 4412-type, L/D ≈ 20</span></div>
+            </div>
+            <p>
+                A correction the study makes early: a single blanket drivetrain efficiency is wrong, because efficiency depends on where thrust is produced. Rangola has <strong>no propeller of its own</strong> — it is towed, so it inherits the marine efficiency of whichever ocean glider pulls it (η ≈ 0.60 surface, 0.70 submerged). The η ≈ 0.80 air-propeller figure applies only to the WIG, never to Rangola.
+            </p>
+        </section>
+
+        <!-- ENERGY -->
+        <section>
+            <h2>Energy-Efficiency Comparison</h2>
+            <p>All electric craft are compared at 25&nbsp;kn / 100&nbsp;km / 4 passengers. The helicopter is shown at its own efficient cruise (forcing it to 25&nbsp;kn, near hover, would be worse) and burns fossil fuel, so its figure is fuel energy, not battery kWh.</p>
+
+            <div class="visualization">
+                <h4>Energy per 100 km — 4 passengers</h4>
+                <img src="assets/rangola_energy_comparison.jpg" alt="Bar chart of energy per 100 km — helicopter 263, speedboat 129, Rangola 87, hydrofoil 70, seaglider/WIG 39 kWh">
+                <p class="caption">Rangola (recommended wave-piercing tow) sits between the speedboat and the hydrofoil; the WIG is the energy champion and the helicopter is in a different, far costlier class. <strong>Rangola's advantage is not raw energy</strong> — it is the combination of comfort, simplicity, safety and emissions.</p>
+            </div>
+
+            <p>The worked drag build-up for the recommended configuration splits cleanly into a small aerodynamic term (the airglider) and a large hydrodynamic term (the tow vehicle):</p>
+            <p style="margin: 15px 40px; color: #f57c00; font-family: 'Courier New', monospace;">
+                D<sub>aero</sub> = 750·g / 20 ≈ 368 N &nbsp;&nbsp;·&nbsp;&nbsp; D<sub>hydro</sub> = 1300·g / 8.5 ≈ 1500 N<br>
+                D<sub>total</sub> ≈ 1868 N &nbsp;⇒&nbsp; E = 1868×10⁵ / (0.60 × 3.6×10⁶) ≈ <strong>87 kWh / 100 km</strong>
+            </p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Mode</th>
+                        <th>Drag — water / air (N)</th>
+                        <th>Power (kW)</th>
+                        <th>kWh / 100 km</th>
+                        <th>Per pax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Helicopter</strong> — light 4-seat<sup>†</sup></td>
+                        <td>0 / aero</td>
+                        <td>~140</td>
+                        <td>~263 (fuel)</td>
+                        <td>~66</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speedboat</strong> — planing hull</td>
+                        <td>2 780 / 0</td>
+                        <td>35.7</td>
+                        <td>129</td>
+                        <td>32</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hydrofoil</strong></td>
+                        <td>1 520 / 0</td>
+                        <td>19.5</td>
+                        <td>70</td>
+                        <td>18</td>
+                    </tr>
+                    <tr style="background:#eaf1fa;">
+                        <td><strong>Rangola</strong> — wave-piercing tow</td>
+                        <td>1 500 / 368</td>
+                        <td>24.0</td>
+                        <td><strong>87</strong></td>
+                        <td><strong>22</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seaglider / WIG</strong> (REGENT-type)</td>
+                        <td>0 / 1 130</td>
+                        <td>14.5</td>
+                        <td>39</td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size:0.9em; color:#666;"><sup>†</sup> Helicopter at ≈ 190 km/h cruise on fossil fuel; its figure is fuel energy, not battery kWh.</p>
+
+            <p>
+                <strong>Water vs. air — the key structural finding.</strong> The speedboat and hydrofoil are 100% hydrodynamic; the WIG is 100% aerodynamic; Rangola is a hybrid in which ≈ 80% of resistance is still hydrodynamic (the tow vehicle) and only ≈ 20% aerodynamic (the airglider). Putting the passengers in the air removes them from the water but <em>does not remove the water vehicle</em> — which is why the tow vehicle dominates the entire analysis.
+            </p>
+
+            <div style="background:#fff8e1; border-left:4px solid #f57c00; padding:20px 25px; border-radius:4px; margin-top:20px;">
+                <p style="font-weight:600; color:#e65100; margin-bottom:8px;">Honest caveat on the 25-knot basis</p>
+                <p style="color:#5c4a1a; font-size:0.95em;">25 kn is slow for a wing: to lift 750 kg the airglider needs ≈ 36–60 m² of wing flying near stall. The flying modes naturally prefer ≈ 35–45 kn, where the wing shrinks and aero L/D improves — but above ≈ 45–50 kn the water propulsion and any foils cavitate, capping system speed. Rangola's real sweet spot is a narrow ~35–45 kn band; the 25-kn comparison is fair but flatters the boats.</p>
+            </div>
+        </section>
+
+        <!-- TOW VEHICLE -->
+        <section>
+            <h2>The Central Decision — the Tow Vehicle</h2>
+            <p>Because ≈ 80% of Rangola's drag is hydrodynamic, the tow vehicle is the design driver. The recommendation evolved across review rounds: from submerged vs. surface, to foil vs. planing, to a final wave-piercing answer.</p>
+
+            <div class="visualization">
+                <h4>Ocean glider — the tow vehicle</h4>
+                <img src="assets/rangola_tow_vehicle.jpg" alt="Ocean-glider tow vehicle schematic — battery kept low for stability, pod motor, tension-controlled winch, no passengers">
+                <p class="caption">The tow vehicle carries the battery low for stability, a pod motor, an autopilot and a tension-controlled winch — and <strong>no passengers</strong> (mass ≈ 1 300 kg). This early sketch shows a foiling layout; the hull form was subsequently refined to a passive wave-piercing catamaran, for the reasons below.</p>
+            </div>
+
+            <h3>Submerged glider — rejected</h3>
+            <p>Cruising a few metres down buys calm water, low spray and a clean propulsor (η ≈ 0.70). But the entire streamlined hull (≈ 17 m² wetted) sits in water 840× denser than air, giving ≈ 4 600 N of drag and ≈ 183 kWh/100 km — the <strong>worst</strong> electric option, above even a speedboat — while also adding depth-keeping under a fluctuating tow load and a surface-piercing tether. A surface vessel is clearly preferable.</p>
+
+            <div class="visualization">
+                <h4>Submerged body vs. surface vessel</h4>
+                <img src="assets/rangola_submerged_vs_surface.jpg" alt="Comparison — submerged streamlined glider (whole hull immersed, worst energy) versus surface foiling catamaran (only small foils wetted, far less drag)">
+                <p class="caption">The submerged body cruises in calm water but immerses its whole hull in dense water; a surface vessel keeps far less wetted area, using ≈ 2.6× less energy. Keeping the hull mostly out of the water is the single biggest lever.</p>
+            </div>
+
+            <h3>Hydrofoil — not the answer either</h3>
+            <p>A foiling catamaran looks best on energy alone (≈ 71 vs ≈ 115 kWh/100 km for a planing hull), but hydrofoil technology has never scaled commercially despite that advantage — active-trim foils and retraction add complexity and maintenance, submerged foils are vulnerable to floating debris, foils need a minimum speed to work, and CAPEX is 2–3× a simple hull. Crucially, <strong>Rangola neutralises the foil's main non-energy selling point</strong>: a standalone hydrofoil justifies its foil cost partly through ride smoothness because passengers sit on the hull — but in Rangola the cabin is airborne, so hull ride quality is irrelevant to comfort. That leaves only an energy advantage, which can be captured more simply.</p>
+        </section>
+
+        <!-- WAVE PIERCING + PITCH -->
+        <section>
+            <h2>Wave-Piercing Hull &amp; Why Pitch Matters</h2>
+            <p>The decisive question was whether the surface tow vehicle should use a wave-piercing profile. The answer is <strong>yes</strong> — and the reasoning rests on a mechanism unique to Rangola.</p>
+
+            <div class="visualization">
+                <h4>Three candidate hull forms for the tow vehicle</h4>
+                <img src="assets/rangola_hull_comparison.jpg" alt="Hull-form comparison — conventional planing hull, wave-piercing monohull, and wave-piercing catamaran, with side and front views and pitch/energy figures">
+                <p class="caption">Wave-piercing forms trade beam and length for far better motion in a seaway and a small CAPEX premium. Two findings stand out: they save <strong>17–25% energy</strong> (a slender hull avoids climbing its own bow wave) and drop RMS pitch acceleration by <strong>3–4×</strong>.</p>
+            </div>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric (1 300 kg, 25 kn, incl. 368 N aero)</th>
+                        <th>Planing hull</th>
+                        <th>Wave-piercing monohull</th>
+                        <th>Wave-piercing catamaran</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Effective L/D</strong></td><td>6.0</td><td>7.5</td><td>8.5</td></tr>
+                    <tr><td>System drag, incl. aero (N)</td><td>2 493</td><td>2 068</td><td>1 868</td></tr>
+                    <tr><td><strong>Energy (kWh / 100 km)</strong></td><td>115</td><td>96</td><td><strong>87</strong></td></tr>
+                    <tr><td>Battery for 100 km @ 250 Wh/kg</td><td>462 kg</td><td>383 kg</td><td>346 kg</td></tr>
+                    <tr><td>RMS pitch accel. in Sea State 2 (g)</td><td>~0.35</td><td>~0.12</td><td><strong>~0.08</strong></td></tr>
+                    <tr><td>Length / beam (m)</td><td>6.0 / 2.4</td><td>9.0 / 2.0</td><td>9.0 / 3.5</td></tr>
+                    <tr><td>Tow-vehicle CAPEX (ROM)</td><td>$250–450k</td><td>$350–650k</td><td>$450–850k</td></tr>
+                </tbody>
+            </table>
+
+            <div class="visualization">
+                <h4>How hull pitch drives the tether — and the winch</h4>
+                <img src="assets/rangola_pitch_tether.jpg" alt="Two panels — a planing hull pitching about 5 degrees swings the tether angle and forces the winch to cycle; a wave-piercer pitching about 1.5 degrees keeps the tether nearly constant">
+                <p class="caption">A planing hull pitching ±5° at wave frequency swings the tether angle and forces the winch to spool in/out continuously; a wave-piercer keeps the tether angle nearly constant, so the winch operates near steady-state — less wear, less cabin surge, less snatch loading.</p>
+            </div>
+
+            <div class="finding">
+                <strong>The Rangola-specific insight.</strong>
+                <p>In an ordinary boat, pitch is merely a comfort issue. In Rangola, hull pitch changes the tether angle θ, which drives <em>tension cycling</em> the winch must absorb. The vertical-force change is small (cos&nbsp;5° − 1 ≈ −0.4%), but the <em>rate of change</em> is the problem: a planing hull pitching ±5° at ~1 Hz forces the tension-controlled winch to work at high duty cycle — wear, control complexity, cabin surge and fatigue (snatch loading) in the tether–pylon–winch chain. Cutting pitch RMS by 3–4× turns the winch into a near-steady-state device: a system-level reliability advantage unique to this towed architecture.</p>
+            </div>
+
+            <h3>Recommendation &amp; final ranking</h3>
+            <p><strong>An electric wave-piercing catamaran with conventional pod propulsion, ≈ 1 300 kg, with a stern-mounted tension-controlled winch.</strong> A wave-piercing monohull is the budget alternative where dock width or trailerability is critical; the foiling catamaran is reserved as a Generation-2 upgrade for routes beyond ~150 km where battery mass dominates economics.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Configuration</th>
+                        <th>Energy (kWh / 100 km)</th>
+                        <th>Tow CAPEX (ROM)</th>
+                        <th>Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Submerged streamlined glider</td><td>183</td><td>$0.8M+</td><td style="color:#c62828; font-weight:600;">Rejected</td></tr>
+                    <tr><td>Conventional planing hull</td><td>115</td><td>$250–450k</td><td>Baseline</td></tr>
+                    <tr><td>Wave-piercing monohull</td><td>96</td><td>$350–650k</td><td style="color:#f57c00; font-weight:600;">Budget option</td></tr>
+                    <tr style="background:#eaf1fa;"><td><strong>Wave-piercing catamaran</strong></td><td><strong>87</strong></td><td>$450–850k</td><td style="color:#2e7d32; font-weight:600;">✓ Recommended</td></tr>
+                    <tr><td>Foiling catamaran</td><td>71</td><td>$500k–1.2M</td><td>Reserved for Gen. 2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- COMFORT / CONTROL / SAFETY -->
+        <section>
+            <h2>Comfort, Control &amp; Safety</h2>
+            <p>Comfort is where Rangola genuinely wins, and it wins <strong>by architecture, not by expensive acoustic engineering</strong>: decoupling the cabin from the surface removes wave slam and engine noise, and the elevated canopy gives a seaplane-grade view. There is simply no rigid path for engine vibration to reach the passengers.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Factor</th>
+                        <th>Speedboat</th>
+                        <th>Hydrofoil</th>
+                        <th>Rangola</th>
+                        <th>Why</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Ride smoothness</strong></td><td>★★</td><td>★★★</td><td style="color:#2e7d32; font-weight:600;">★★★★★</td><td>Cabin airborne — decoupled from wave slam; residual tether surge damped by the winch.</td></tr>
+                    <tr><td><strong>Cabin noise</strong></td><td>★★</td><td>★★★</td><td style="color:#2e7d32; font-weight:600;">★★★★★</td><td>No engine/propeller in the cabin; the only link is a flexible tether — no structure-borne noise path.</td></tr>
+                    <tr><td><strong>Motion sickness</strong></td><td>★★</td><td>★★★</td><td style="color:#2e7d32; font-weight:600;">★★★★</td><td>Smooth ride + elevated seat + horizon reference; tether surge must be damped.</td></tr>
+                    <tr><td><strong>Scenic view</strong></td><td>★★</td><td>★★</td><td style="color:#2e7d32; font-weight:600;">★★★★★</td><td>Elevated glider canopy — seaplane-grade panorama.</td></tr>
+                </tbody>
+            </table>
+
+            <p>Because the pilot rides in the airglider, the ocean glider is autonomous and slaved to the cabin — a two-body formation-control problem. Three elements make it tractable:</p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Autopilot</span><span class="spec-value">GPS + IMU, heading/speed/station-hold; route commands over a datalink (backup line inside the tether)</span></div>
+                <div class="spec-item"><span class="spec-label">Tension-controlled winch</span><span class="spec-value">Holds tether tension in a target band, damping gusts and preventing slack-then-snatch — the key enabler</span></div>
+                <div class="spec-item"><span class="spec-label">Emergency case</span><span class="spec-value">Instant tether release → glide to a water landing (hull/floats) or ballistic parachute; ocean glider fails safe to a stop</span></div>
+            </div>
+            <p>The winch heritage is real and proven — glider-tow winches, parasail boats, aerial-refuelling drogues, SkySails kite pods — and because the cabin is unpowered and battery-free, its emergency case is simpler than any powered craft's.</p>
+        </section>
+
+        <!-- POSITIONING / ECONOMICS -->
+        <section>
+            <h2>Competitive Positioning &amp; Economics</h2>
+            <p>The helicopter and WIG are not close competitors on physics or economics. The helicopter is the premium incumbent — fastest and runway-free, but the energy outlier and the most expensive to run, needing a commercial pilot; it frames the top of the market Rangola undercuts. The WIG is the energy champion but a fast, certification-heavy commuter, not an experience craft. The real contest is the tow vehicle, resolved above.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Helicopter (4-seat)</th>
+                        <th>WIG Seaglider (REGENT, 12-pax)</th>
+                        <th>Rangola (4-pax, estimate)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Unit CAPEX</td><td>~$0.5–1.5M</td><td>~$5–7M (~$0.45–0.6M/seat)</td><td>~$0.6–1.2M (target)</td></tr>
+                    <tr><td>Operating cost</td><td>~$300–550/h direct; $500–1 500/h charter</td><td>"low four figures"/h (~$1–3k)</td><td>~$200–600/h (energy ≈ $13/100 km)</td></tr>
+                    <tr><td>Energy / 100 km</td><td>~263 kWh (fossil)</td><td>~39 (4-pax-equiv.)</td><td>~87 (wave-piercing tow)</td></tr>
+                    <tr><td>Crew / licence</td><td>Commercial heli pilot (CPL-H)</td><td>Maritime captain (USCG/IMO)</td><td>Glider / maritime operator</td></tr>
+                    <tr><td>Cruise speed</td><td>~190–260 km/h</td><td>~290 km/h</td><td>~46–80 km/h</td></tr>
+                    <tr><td>Emissions</td><td>High (avgas / Jet-A)</td><td>Zero (electric)</td><td>Zero (electric)</td></tr>
+                </tbody>
+            </table>
+
+            <p><strong>Two structural advantages worth calling out.</strong> First, crewing: because Rangola is unpowered and permanently tethered to a vessel, there is a credible path to classifying it like a towed maritime device (the parasail precedent) — potentially the cheapest crewing of any option, though this pathway is unproven and is itself both a key risk and a key opportunity. Second, <strong>"float the battery"</strong>: a WIG must lift every kilogram of battery aerodynamically, whereas Rangola floats its battery on the ocean glider where buoyancy supports it for free — so as route length and battery mass grow, Rangola's relative position improves against any craft that must lift its own battery.</p>
+        </section>
+
+        <!-- PROTOTYPING -->
+        <section>
+            <h2>Prototyping Path</h2>
+            <p>The dominant unknown is the two-body tethered dynamics and tension control. That risk can be retired cheaply <strong>before any full-scale commitment</strong> by reusing an existing foam powered glider (de-motored, with a nose bridle and telemetry added) towed from an off-the-shelf RC boat with a small tension winch.</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>ROM cost</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#e8f5e9;"><td><strong>Sub-scale tethered demonstrator</strong></td><td><strong>$12k–$25k</strong></td><td>Reuse foam glider + RC boat + winch + Pixhawk telemetry + ≈ 150 h engineering — <strong>build this first</strong></td></tr>
+                    <tr><td>Full-scale airglider</td><td>$0.8M–$2.0M</td><td>Composite 4-seat unpowered glider, water-landing capable, ballistic chute</td></tr>
+                    <tr><td>Full-scale wave-piercing tow vehicle</td><td>$0.45M–$0.85M</td><td>Electric wave-piercing catamaran, battery, pod drive, autopilot, tension winch</td></tr>
+                    <tr><td>Integration, test, safety, insurance</td><td>$0.4M–$1.0M</td><td>Two-body dynamics flight test, certification groundwork</td></tr>
+                    <tr><td><strong>Full-scale prototype TOTAL</strong></td><td><strong>$1.65M–$3.85M</strong></td><td>Order-of-magnitude only</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- LIMITATIONS -->
+        <section>
+            <h2>Limitations &amp; Scope</h2>
+            <div style="background:#fff8e1; border-left:4px solid #f57c00; padding:20px 25px; border-radius:4px;">
+                <p style="font-weight:600; color:#e65100; margin-bottom:8px;">What this study is — and is not</p>
+                <p style="color:#5c4a1a; font-size:0.95em;">First-order estimates using textbook L/D ranges, assumed masses and efficiencies, and slender-body drag build-ups; expect ±25–30%. Pitch-acceleration figures are typical for the indicated sea state and depend on specific hull lines. WIG and helicopter cost and regulatory facts are publicly reported and may change. No CAD, CFD or FEA was performed, as scoped — these figures are for screening and prioritisation, not design sizing. A hull-lines design and basic seakeeping CFD would refine the tow-vehicle numbers in a follow-on phase.</p>
+            </div>
+        </section>
+
+        <!-- OUTCOMES -->
+        <section>
+            <div style="background:#e8f5e9; padding:25px; border-radius:4px; border-left:4px solid #2e7d32;">
+                <p style="font-weight:600; color:#1b5e20; margin-bottom:10px;">✓ Project Outcomes</p>
+                <ul style="margin-left:20px; color:#2e7d32;">
+                    <li>Reduced a novel multi-vehicle concept to a defensible first-order physics model across five transport modes on one consistent basis.</li>
+                    <li>Identified the tow vehicle — not the airglider — as the dominant design driver: ≈ 80% of system drag is hydrodynamic.</li>
+                    <li>Selected an electric wave-piercing catamaran as the recommended tow vehicle (≈ 87 kWh/100 km) using only passive, proven naval architecture.</li>
+                    <li>Uncovered a Rangola-specific reliability mechanism — hull pitch driving tether-tension cycling — cut 3–4× by a wave-piercing hull.</li>
+                    <li>Benchmarked comfort, control, crewing, licensing and economics against helicopter, speedboat, hydrofoil and WIG.</li>
+                    <li>Defined a low-cost ($12k–$25k) sub-scale tethered demonstrator to retire the biggest technical risk before any full-scale spend.</li>
+                    <li>Delivered an honest verdict — conditionally promising — with clearly scoped limitations (±25–30%, no CAD/CFD/FEA).</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 11: Rangola — Feasibility Study of a Towed Passenger Airglider</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">June 2026</p>
+    </footer>
+
+</body>
+</html>
