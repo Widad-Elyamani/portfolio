@@ -494,7 +494,7 @@
 
         .search-clear[hidden] { display: none; }
 
-        /* Discipline filter — twelve projects is too many to scan linearly */
+        /* Discipline filter — thirteen projects is too many to scan linearly */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -982,10 +982,37 @@
                 </div>
             </a>
 
+            <!-- PROJECT 13: Fetal Head FEA -->
+            <a class="project-card" data-category="structures" href="project_13_fetal_head_fea.html">
+                <img src="assets/fetal_deformation_hero.jpg" alt="Fetal head FEA cranial molding simulation thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 13</div>
+                    <h3 class="project-title">Fetal Head FEA — Cranial Molding under Labor Loads</h3>
+                    <p class="project-subtitle">Biomechanics | SolidWorks Prep | ANSYS Static Structural</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        A biomechanics finite-element study of fetal cranial molding during childbirth. Starting from a research project's segmented fetal-head model, I rebuilt it as a clean multi-body FEA model in SolidWorks (cranial plates, sutures, fontanelles, scalp) and ran an ANSYS static-structural simulation under 16 kPa labor pressure, capturing the characteristic head molding (~5 mm).
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Biomechanics</span>
+                        <span class="tag">ANSYS</span>
+                        <span class="tag">FEA</span>
+                        <span class="tag">SolidWorks</span>
+                        <span class="tag">Contacts</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Built the full ANSYS pipeline (neonatal materials, contacts, refined mesh) and read the results critically — flagging a peak-strain singularity as a meshing artefact, not a physical result
+                    </p>
+                    <span class="project-link">View Case Study →</span>
+                </div>
+            </a>
+
         </div>
 
         <p class="filter-empty" id="noResults" hidden>
-            No projects match that. <button type="button" class="link-reset" id="resetAll">Show all twelve</button>
+            No projects match that. <button type="button" class="link-reset" id="resetAll">Show all thirteen</button>
         </p>
 
         <!-- ABOUT SECTION -->
