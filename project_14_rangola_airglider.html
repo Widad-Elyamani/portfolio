@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 14: Rangola Airglider — Preliminary Sizing & CAD Model</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- topnav -->
+    <nav style="position:sticky; top:0; z-index:1000; background:#ffffff; border-bottom:1px solid #e0e6ed; padding:12px 40px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <a href="index.html" style="color:#133D6E; text-decoration:none; font-weight:600; font-size:0.95em;">← Back to Portfolio</a>
+    </nav>
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 14
+        </div>
+        <h1>Rangola Airglider — Preliminary Sizing &amp; CAD Model</h1>
+        <p>4-Passenger Towed Flying-Boat Glider | First-Order Sizing | CATIA V5 CAD</p>
+    </header>
+
+    <img src="assets/rangola_cad_hero.jpg" alt="CATIA CAD model of the Rangola airglider — a high-aspect-ratio glider with a T-tail and a flying-boat hull" class="hero-image" style="max-height:340px; object-fit:contain; background:#43486a;">
+
+    <div class="container">
+
+        <!-- OVERVIEW -->
+        <section>
+            <h2>Overview</h2>
+            <p>
+                The Rangola is a 4-passenger <strong>unpowered airglider</strong> — a flying boat that is towed above the sea by an electric surface craft, like a sailplane on aero-tow. This project is the <strong>design phase</strong> that follows the concept work in <a href="project_11_rangola.html">the Rangola feasibility study (Project 11)</a>: it turns the screening-level figures into a dimensioned engineering baseline, and builds the low-fidelity, analysis-ready CAD model of the aircraft in CATIA V5.
+            </p>
+            <p>
+                Two deliverables sit behind this page. First, a <strong>preliminary sizing package</strong> — weights and balance, the wing, the flying-boat hull, the T-tail, and the tow/tag mechanism — derived from classical preliminary-design relations. Second, a clean <strong>CATIA CAD model</strong> of the air-section (fuselage, wings, tail, floats, tether point, cabin and occupants), de-featured so it is ready for preliminary CFD, FEA and kinematic studies.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Design Mass (MTOW)</div>
+                    <div class="metric-value">750<span class="metric-unit">kg</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Wingspan</div>
+                    <div class="metric-value">18<span class="metric-unit">m · AR 13.5</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Cruise Window</div>
+                    <div class="metric-value">35–45<span class="metric-unit">knots</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Governing Tow Load</div>
+                    <div class="metric-value">2.3<span class="metric-unit">kN (hump)</span></div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Scope &amp; honesty.</strong>
+                <p>This is a first-order engineering definition (confidence ±15–30%) meant for configuration freeze and prioritisation, not final stressing — no CFD or FEA is performed in this phase. Two results are worth flagging up front: the aircraft cannot fly at the study's 25 kn comparison speed (it is below stall), and the tow system is sized by the water take-off load, not by cruise. Both are explained below.</p>
+            </div>
+        </section>
+
+        <!-- SCOPE / CAD -->
+        <section>
+            <h2>The CAD Deliverable</h2>
+            <p>
+                The model covers the <strong>air-section only</strong> — the tow boat, winch, motors and sea-section are out of scope. It includes the fuselage/hull, wings, T-tail and floats, the tether attachment point where the tow cable meets the aircraft, and the doors, windows, seats and a passenger payload for visualisation. The flaps and elevators are modelled in representative takeoff, cruise and landing positions (no detailed hinges or actuation), and the geometry is kept clean and de-featured — windows closed — so it is suitable for preliminary CFD, FEA and basic kinematic studies.
+            </p>
+
+            <div class="img-grid">
+                <div class="visualization">
+                    <h4>Front view — span and proportions</h4>
+                    <img src="assets/rangola_cad_front.jpg" alt="Front view of the Rangola CAD model showing the high-aspect-ratio wing, T-tail and the flying-boat hull slung below">
+                    <p class="caption">The high-aspect-ratio wing (18 m span), T-tail clear of spray, and the flying-boat hull slung below.</p>
+                </div>
+                <div class="visualization">
+                    <h4>Three-quarter view — surfaced hull and cabin</h4>
+                    <img src="assets/rangola_cad_detail.jpg" alt="Three-quarter CAD view showing the surfaced fuselage, cabin windows and wing root">
+                    <p class="caption">The de-featured but fully surfaced fuselage, cabin glazing and wing root — clean enough to mesh for CFD.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLIGHT CONFIGURATIONS -->
+        <section>
+            <h2>Flight Configurations</h2>
+            <p>
+                The model is posed in the three configurations the aircraft passes through on a tow, with the flaps and elevator set to representative positions for each phase.
+            </p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin:22px 0;">
+                <div style="background:#f7f9fc; border-radius:6px; padding:10px;">
+                    <img src="assets/rangola_takeoff.jpg" alt="Rangola CAD model in takeoff configuration" style="width:100%; border-radius:4px; display:block;">
+                    <p class="caption" style="text-align:center; margin-top:8px;"><strong>Takeoff</strong><br>High-lift flaps deployed for the water unstick.</p>
+                </div>
+                <div style="background:#f7f9fc; border-radius:6px; padding:10px;">
+                    <img src="assets/rangola_cruise.jpg" alt="Rangola CAD model in cruise configuration" style="width:100%; border-radius:4px; display:block;">
+                    <p class="caption" style="text-align:center; margin-top:8px;"><strong>Cruise</strong><br>Clean wing for the 35–45 kn towed cruise.</p>
+                </div>
+                <div style="background:#f7f9fc; border-radius:6px; padding:10px;">
+                    <img src="assets/rangola_landing.jpg" alt="Rangola CAD model in landing configuration" style="width:100%; border-radius:4px; display:block;">
+                    <p class="caption" style="text-align:center; margin-top:8px;"><strong>Landing</strong><br>Flaps and elevator set for the unpowered water landing after release.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CABIN -->
+        <section>
+            <h2>Cabin &amp; Payload</h2>
+            <p>
+                The four seats are arranged 2+2 straddling the centre of gravity, so the aircraft stays in balance whether one seat or all four are filled. Occupant manikins are included for visualisation and to check sightlines and clearances; the windows are modelled closed so the external surface stays clean for CFD.
+            </p>
+            <div class="img-grid">
+                <div class="visualization">
+                    <img src="assets/rangola_cabin.jpg" alt="CATIA cabin interior with seated passenger manikins and windows">
+                    <p class="caption">Cabin interior with the 2+2 seating and occupants.</p>
+                </div>
+                <div class="visualization">
+                    <img src="assets/rangola_cabin2.jpg" alt="Second angle of the CATIA cabin interior with passenger manikins">
+                    <p class="caption">A second view through the cabin, showing door and window placement.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WEIGHTS -->
+        <section>
+            <h2>Weights &amp; Balance</h2>
+            <p>
+                An empty-weight buildup from composite-construction unit weights closes at ≈ 410 kg; with a four-passenger payload the design mass (MTOW) is 750 kg. The hull is the single heaviest group, as a watertight planing boat should be.
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Empty mass</span><span class="spec-value">≈ 410 kg (±15%)</span></div>
+                <div class="spec-item"><span class="spec-label">Payload (4 pax + bags)</span><span class="spec-value">340 kg</span></div>
+                <div class="spec-item"><span class="spec-label">Design mass (MTOW)</span><span class="spec-value">750 kg</span></div>
+                <div class="spec-item"><span class="spec-label">Wing loading W/S</span><span class="spec-value">306 N/m²</span></div>
+                <div class="spec-item"><span class="spec-label">Design load factor</span><span class="spec-value">+2.0 / −0.5 (×1.5 ultimate)</span></div>
+                <div class="spec-item"><span class="spec-label">CG band</span><span class="spec-value">15–33% MAC (≳12% static margin)</span></div>
+            </div>
+            <p style="font-size:0.92em; color:#555;">Heaviest groups: hull/fuselage ≈ 130 kg, wing ≈ 100 kg, furnishings ≈ 50 kg, systems (incl. ballistic chute) ≈ 43 kg, empennage ≈ 33 kg, tow system ≈ 24 kg, flight controls ≈ 22 kg, floats ≈ 8 kg.</p>
+        </section>
+
+        <!-- WING + 25 kn -->
+        <section>
+            <h2>Wing Sizing &amp; the 25-knot Finding</h2>
+            <p>
+                The wing is sized by the water lift-off case — it must unstick the hull at the lowest practical speed, at maximum lift with flaps. That gives a reference area of ≈ 24 m²; holding the high aspect ratio fixes an 18 m span.
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Reference area S</span><span class="spec-value">24 m²</span></div>
+                <div class="spec-item"><span class="spec-label">Span b / aspect ratio</span><span class="spec-value">18.0 m / AR 13.5</span></div>
+                <div class="spec-item"><span class="spec-label">Airfoil</span><span class="spec-value">NACA 4412 (t/c 12%)</span></div>
+                <div class="spec-item"><span class="spec-label">Taper / root · tip chord</span><span class="spec-value">0.45 / 1.84 · 0.83 m (MAC 1.40 m)</span></div>
+                <div class="spec-item"><span class="spec-label">CL max — clean / flap</span><span class="spec-value">1.5 / 2.4 (Fowler)</span></div>
+                <div class="spec-item"><span class="spec-label">Geometry</span><span class="spec-value">3° dihedral, 3° incidence, 2° washout</span></div>
+            </div>
+
+            <div style="background:#fff8e1; border-left:4px solid #f57c00; padding:20px 25px; border-radius:4px; margin-top:20px;">
+                <p style="font-weight:600; color:#e65100; margin-bottom:8px;">The honest 25-knot problem</p>
+                <p style="color:#5c4a1a; font-size:0.95em;">
+                    The feasibility study used 25 kn as an apples-to-apples speed to compare against boats. The sizing shows the aircraft <strong>cannot actually fly there</strong>: at 750 kg, level flight at 25 kn would need a lift coefficient of ~3.0, which no practical flap system delivers — it is below the flapped stall of ~28 kn. The 25 kn figure is a comparison convenience, not a flyable cruise point. The true operating band is <strong>35–45 kn</strong>, which reconciles the 18 m span with an efficient wing and keeps the tow craft below its cavitation ceiling.
+                </p>
+                <div class="specs" style="margin-top:14px;">
+                    <div class="spec-item"><span class="spec-label">Required CL at 25 kn</span><span class="spec-value">≈ 3.0 — not achievable</span></div>
+                    <div class="spec-item"><span class="spec-label">Required CL at 35 / 40 / 45 kn</span><span class="spec-value">1.55 / 1.18 / 0.93 — flyable</span></div>
+                    <div class="spec-item"><span class="spec-label">Stall (flap / clean)</span><span class="spec-value">28 / 36 kn</span></div>
+                    <div class="spec-item"><span class="spec-label">Lift-off / VNE</span><span class="spec-value">31 kn / ≈ 58 kn</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HULL / EMPENNAGE / STRUCTURE -->
+        <section>
+            <h2>Hull, Empennage &amp; Wing Structure</h2>
+            <p>
+                The hull is a slender stepped flying-boat planing bottom, sized from flying-boat beam-loading practice; the T-tail keeps the tailplane clear of spray and wake. A quick spar check confirms the high-aspect-ratio wing closes structurally in composite.
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Hull beam / length</span><span class="spec-value">1.00 m / 8.5 m (L/B ≈ 8.5)</span></div>
+                <div class="spec-item"><span class="spec-label">Step depth / deadrise at step</span><span class="spec-value">60 mm / 22° (30–40° bow, 15° aft)</span></div>
+                <div class="spec-item"><span class="spec-label">Spray control</span><span class="spec-value">1 chine + 2 spray rails per side</span></div>
+                <div class="spec-item"><span class="spec-label">Horizontal tail</span><span class="spec-value">3.7 m² (volume coeff. 0.50)</span></div>
+                <div class="spec-item"><span class="spec-label">Vertical tail / tail arm</span><span class="spec-value">2.4 m² (0.025) / 4.5 m</span></div>
+                <div class="spec-item"><span class="spec-label">Wing root bending (limit → ult.)</span><span class="spec-value">26.5 → 39.7 kN·m</span></div>
+                <div class="spec-item"><span class="spec-label">CFRP spar cap</span><span class="spec-value">≈ 331 mm² per cap (feasible)</span></div>
+            </div>
+        </section>
+
+        <!-- TOW MECHANISM -->
+        <section>
+            <h2>Tow / Tag Mechanism</h2>
+            <p>
+                The airglider trails behind and above the surface craft; all tow loads enter at a nose bridle, pass through a quick-release, and run down the tether to the craft's stern winch. The design driver here is a distinctive one.
+            </p>
+            <p>
+                <strong>The water take-off "hump" sizes the whole tow chain — not cruise.</strong> In steady flight the tether tension is essentially just the airframe drag, ≈ 0.37 kN. But before lift-off the hull is still in the water, and planing resistance peaks at the "hump" at ≈ 2.3 kN — roughly six times cruise. That peak, with a snatch factor and an aerospace factor of safety, sets the design loads.
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Cruise tension</span><span class="spec-value">0.37 kN (airframe drag only)</span></div>
+                <div class="spec-item"><span class="spec-label">Take-off hump tension</span><span class="spec-value">2.3 kN — governing load</span></div>
+                <div class="spec-item"><span class="spec-label">Limit / ultimate design tension</span><span class="spec-value">3.5 kN / 5.3 kN</span></div>
+                <div class="spec-item"><span class="spec-label">Tether (Dyneema/UHMWPE)</span><span class="spec-value">MBL ≥ 15 kN (5–6 mm)</span></div>
+                <div class="spec-item"><span class="spec-label">Hardpoint</span><span class="spec-value">2-leg nose bridle, 8 mm pin, 10 mm bush</span></div>
+                <div class="spec-item"><span class="spec-label">Quick-release</span><span class="spec-value">Tost-type glider release + pyro backup</span></div>
+            </div>
+            <p style="margin-top:14px;">
+                A second Rangola-specific driver: the nose tow point sits ~3 m ahead of and ~0.4 m below the CG, so the tension applies a pitching moment that swings from ~0.1 kN·m in cruise to ~1.0 kN·m at the hump — a nose-down moment the tail has to trim across the whole take-off run. This coupling, which an ordinary towed boat does not have, is why the empennage is sized with margin.
+            </p>
+        </section>
+
+        <!-- LIMITATIONS -->
+        <section>
+            <h2>Limitations &amp; Next Steps</h2>
+            <div style="background:#fff8e1; border-left:4px solid #f57c00; padding:20px 25px; border-radius:4px;">
+                <p style="font-weight:600; color:#e65100; margin-bottom:8px;">First-order sizing — for configuration freeze, not final stressing</p>
+                <p style="color:#5c4a1a; font-size:0.95em;">
+                    Everything here rests on textbook preliminary-design correlations and composite unit weights, at ±15–30% confidence. The biggest things to close next: the cruise L/D of 20 is optimistic (a real stepped hull is nearer 16–18, raising drag and tension ~20%); the two-body tethered dynamics — snatch, porpoising, formation stability — are the dominant unknown and set the true dynamic tension factor; and rough-water impact loads may exceed the flight case for the hull bottom. The recommended path is a low-cost tethered demonstrator to measure real tension traces, then a CFD hull polar and seakeeping study, then wing and hull FEA to the gust and water-impact envelopes, and finally the detailed CAD. The CAD model on this page is built to feed exactly that follow-on CFD/FEA work.
+                </p>
+            </div>
+        </section>
+
+        <!-- OUTCOMES -->
+        <section>
+            <div style="background:#e8f5e9; padding:25px; border-radius:4px; border-left:4px solid #2e7d32;">
+                <p style="font-weight:600; color:#1b5e20; margin-bottom:10px;">✓ Project Outcomes</p>
+                <ul style="margin-left:20px; color:#2e7d32;">
+                    <li>Turned the feasibility study's screening figures into a dimensioned sizing baseline — weights &amp; balance, a 24 m² / 18 m wing, the flying-boat hull, a T-tail, and the tow mechanism.</li>
+                    <li>Built a clean, de-featured CATIA V5 CAD model of the air-section (fuselage, wings, tail, floats, tether point, cabin and occupants) ready for preliminary CFD and FEA.</li>
+                    <li>Posed the model in takeoff, cruise and landing configurations with representative flap and elevator positions.</li>
+                    <li>Established the real operating band (35–45 kn) and showed honestly why the 25 kn comparison speed is not flyable.</li>
+                    <li>Identified the water take-off "hump" (2.3 kN) as the governing tow load and sized the tether, hardpoint and quick-release to it — with the nose-tow trim coupling driving the empennage margin.</li>
+                    <li>Confirmed the high-aspect-ratio wing closes structurally in composite with a modest CFRP spar cap.</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 14: Rangola Airglider — Preliminary Sizing &amp; CAD Model</p>
+        <p><a href="index.html">← Back to Portfolio</a> · <a href="project_11_rangola.html">See the Rangola feasibility study →</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">2026</p>
+    </footer>
+
+</body>
+</html>
