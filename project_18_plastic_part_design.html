@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 18: Injection-Moulded Plastic Part Design — Automotive B-Pillar Trim</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- topnav -->
+    <nav style="position:sticky; top:0; z-index:1000; background:#ffffff; border-bottom:1px solid #e0e6ed; padding:12px 40px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <a href="index.html" style="color:#133D6E; text-decoration:none; font-weight:600; font-size:0.95em;">← Back to Portfolio</a>
+    </nav>
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 18
+        </div>
+        <h1>Injection-Moulded Plastic Part Design — Automotive B-Pillar Trim</h1>
+        <p>Plastic Part Design Process | Class A / B / C Surfaces | CATIA V5 GSD | Training Project</p>
+    </header>
+
+    <img src="assets/plastic_design_rules.png" alt="Schematic section of an injection-moulded part showing the demoulding direction, parting line, Class A and Class B faces, constant 2.5 mm wall, drafted walls, ribs and a boss" class="hero-image" style="max-height:360px; object-fit:contain; background:#ffffff;">
+
+    <div class="container">
+
+        <!-- OVERVIEW -->
+        <section>
+            <h2>Overview</h2>
+            <p>
+                The B-pillar trim is the plastic cover over a car's central pillar, between the front and rear doors. Like most interior trim it is <strong>injection-moulded</strong>, so its geometry is shaped as much by the mould as by the styling: every face has to release from the tool, the wall has to stay at one thickness, and the fixings have to sit on the hidden side without marking the visible one.
+            </p>
+            <p>
+                This project, done during a professional training in plastic part design, follows the path a part takes in an automotive design office: starting from the stylist's surface and ending with a manufacturable solid with its fixing points — all in <strong>CATIA V5 Generative Shape Design</strong>.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Nominal Wall</div>
+                    <div class="metric-value">2.5<span class="metric-unit">mm</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Design Steps</div>
+                    <div class="metric-value">6</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Process</div>
+                    <div class="metric-value">Injection</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Workbench</div>
+                    <div class="metric-value">GSD</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INPUTS / OUTPUTS -->
+        <section>
+            <h2>The Plastic Part Designer's Role</h2>
+            <p>The designer sits between styling and tooling: the inputs come from the stylist, the design office and the toolmaker, and the output is a part the mould can actually produce.</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Inputs</th><th>Outputs</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Style surface (the visible shape)</td><td>Validated draft angles</td></tr>
+                    <tr><td>Demoulding direction, agreed with the design office and the toolmaker</td><td>Validated demoulding direction</td></tr>
+                    <tr><td>Parting line, agreed with the toolmaker</td><td>Thickened part — the technical definition of the style surface</td></tr>
+                    <tr><td>Required draft angle</td><td>Fixing clips chosen and sized</td></tr>
+                    <tr><td>Surrounding parts and position in the vehicle axis system</td><td>Final part with its clips</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- PROCESS -->
+        <section>
+            <h2>Design Process — Six Steps</h2>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">1 — Analyse the style surface</span><span class="spec-value">Draft analysis against the demoulding direction</span></div>
+                <div class="spec-item"><span class="spec-label">2 — Extract the Class A surface</span><span class="spec-value">Visible faces isolated, areas to rework flagged</span></div>
+                <div class="spec-item"><span class="spec-label">3 — Thicken to Class B</span><span class="spec-value">Constant 2.5 mm wall, radii rebuilt</span></div>
+                <div class="spec-item"><span class="spec-label">4 — Build Class C</span><span class="spec-value">Edge surfaces joining B and C</span></div>
+                <div class="spec-item"><span class="spec-label">5 — Fill with material</span><span class="spec-value">Surfaces closed into a solid</span></div>
+                <div class="spec-item"><span class="spec-label">6 — Add fixing points</span><span class="spec-value">Clip mounts on the hidden side</span></div>
+            </div>
+
+            <h3>1 — Analyse the style surface</h3>
+            <p>The incoming style surface is checked with a draft analysis along the demoulding direction, to find any face that would scrape or lock in the mould. Timing matters: once the tooling has been launched the demoulding direction is frozen, so this is the moment to question it.</p>
+            <div class="img-grid">
+                <div class="visualization">
+                <h4>Input style surface</h4>
+                <img src="assets/bpillar_step1_style.jpg" alt="B-pillar trim style surface in CATIA V5">
+                <p class="caption">The style surface as received, with the vehicle axis system.</p>
+                </div>
+                <div class="visualization">
+                <h4>Draft analysis</h4>
+                <img src="assets/bpillar_step1_draft.jpg" alt="Draft analysis of the B-pillar style surface along the demoulding direction, shown in green">
+                <p class="caption">Draft analysis along the demoulding direction (the dashed line): green faces release from the mould.</p>
+                </div>
+            </div>
+
+            <h3>2 — Extract the Class A surface</h3>
+            <p>The visible faces are copied into their own geometrical set, the <strong>Class A</strong> surface. Keeping them separate means any area that needs changing can be marked and sent back to styling without touching the rest of the model.</p>
+            <div class="img-grid">
+                <div class="visualization">
+                <h4>Class A surface</h4>
+                <img src="assets/bpillar_step2_classA.jpg" alt="Class A surface of the B-pillar trim extracted into its own geometrical set">
+                <p class="caption">The visible faces extracted into a dedicated geometrical set.</p>
+                </div>
+                <div class="visualization">
+                <h4>Areas to rework</h4>
+                <img src="assets/bpillar_step2_rework.jpg" alt="Close-up of the B-pillar Class A surface at the junction of the arch and the lower flange">
+                <p class="caption">Close-up of local areas checked before thickening, to be corrected on the style surface if needed.</p>
+                </div>
+            </div>
+
+            <h3>3 — Thicken to the Class B surface</h3>
+            <p>The back face, <strong>Class B</strong>, is built at a constant <strong>2.5 mm</strong> from Class A. Simply offsetting the fillets would shrink their radii on the inside, so the radii are rebuilt in GSD to keep R<sub>ext</sub> = R<sub>int</sub> + t and an even wall all round.</p>
+            <div class="visualization">
+                <h4>Class A thickened to Class B</h4>
+                <img src="assets/bpillar_step3_classB.jpg" alt="B-pillar trim with the Class A face in magenta and the 2.5 mm thick wall below it">
+                <p class="caption">Class A (magenta) offset to the Class B back face at a constant 2.5 mm.</p>
+            </div>
+
+            <h3>4 — Build the Class C surfaces</h3>
+            <p>The edge surfaces that close the part between its faces (<strong>Class C</strong>) are connected to Class B with multi-section surfaces guided by control points, or with blend surfaces, so the transition stays smooth and the thickness consistent.</p>
+            <div class="visualization">
+                <h4>Class C edge surfaces</h4>
+                <img src="assets/bpillar_step4_classC.jpg" alt="B-pillar trim with the Class C edge surfaces joining the faces along the part outline">
+                <p class="caption">The edge surfaces (light) close the part along its outline between the faces.</p>
+            </div>
+
+            <h3>5 — Fill with material</h3>
+            <p>Once the skin is closed and watertight, it is filled to turn the surface model into a solid part.</p>
+            <div class="visualization">
+                <h4>Solid part</h4>
+                <img src="assets/bpillar_step5_fill.jpg" alt="B-pillar trim as a solid part after the closed surfaces are filled with material">
+                <p class="caption">The closed skin filled into a solid.</p>
+            </div>
+
+            <h3>6 — Add the fixing points</h3>
+            <p>The clip mounts that hold the trim to the body are added on the hidden side, with their supporting ribs, designed to the same thickness rules as the rest of the part so they don't show through on the visible face.</p>
+            <div class="visualization">
+                <h4>Fixing point on the hidden side</h4>
+                <img src="assets/bpillar_step6_fixings.jpg" alt="B-pillar trim seen from the hidden side with a clip housing and its supporting ribs">
+                <p class="caption">A clip housing with its supporting ribs on the back of the part.</p>
+            </div>
+            <div class="visualization" style="text-align:center;">
+                <h4 style="text-align:left;">Model tree — one geometrical set per stage</h4>
+                <img src="assets/bpillar_model_tree.png" alt="CATIA V5 model tree with geometrical sets for the input surface, demoulding direction, Class A, Class C, common surface, Class B, main body, parting line and draft analysis" style="max-width:251px; margin:0 auto;">
+                <p class="caption" style="text-align:left;">Input surface, demoulding direction, Class A, C and B, parting line and draft analysis each live in their own set, so any stage can be revised without breaking the others.</p>
+            </div>
+            <p class="caption" style="font-size:0.85em; color:#777; margin-top:20px;">Step images: reference model from the CAD Engineering training brief.</p>
+        </section>
+
+        <!-- RULES -->
+        <section>
+            <h2>Injection-Moulding Design Rules</h2>
+            <p>The rules behind every step are the same: make the part easy to fill, easy to cool evenly, and easy to eject. The section at the top of this page shows them on a single part.</p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Demoulding direction</span><span class="spec-value">Fixed first — it sets the orientation of ribs, holes and bosses</span></div>
+                <div class="spec-item"><span class="spec-label">Parting line</span><span class="spec-value">As simple as possible; very costly to change once tooling starts</span></div>
+                <div class="spec-item"><span class="spec-label">Wall thickness</span><span class="spec-value">Constant; typically 1.5–3.5 mm for thermoplastics</span></div>
+                <div class="spec-item"><span class="spec-label">Radii</span><span class="spec-value">Round the edges; R<sub>ext</sub> = R<sub>int</sub> + t</span></div>
+                <div class="spec-item"><span class="spec-label">Draft</span><span class="spec-value">3–5° in general; about 1° on short ribs; 7° or more on shut-off faces</span></div>
+                <div class="spec-item"><span class="spec-label">Ribs</span><span class="spec-value">0.33–0.66 × wall thickness at the base, drafted</span></div>
+                <div class="spec-item"><span class="spec-label">Undercuts</span><span class="spec-value">Avoided; otherwise grouped on one side to limit mould slides</span></div>
+                <div class="spec-item"><span class="spec-label">Bosses</span><span class="spec-value">Walls sized like ribs, tied in with ribs, not a solid mass on the wall</span></div>
+            </div>
+            <div class="finding">
+                <strong>Why it matters.</strong>
+                <p>Each rule protects either the visible surface or the cost of the mould. Thick spots cool last and pull the Class A face into sink marks; a face without draft scrapes on ejection; an undercut needs a slide in the tool. Designing to these rules from the first step is what makes the part both good-looking and cheap to produce.</p>
+            </div>
+        </section>
+
+        <!-- OUTCOMES -->
+        <section>
+            <div style="background:#e8f5e9; padding:25px; border-radius:4px; border-left:4px solid #2e7d32;">
+                <p style="font-weight:600; color:#1b5e20; margin-bottom:10px;">✓ Project Outcomes</p>
+                <ul style="margin-left:20px; color:#2e7d32;">
+                    <li>Followed the automotive design-office process for an injection-moulded part, from the style surface to a solid part with fixings.</li>
+                    <li>Checked the style surface for draft against the demoulding direction before building on it.</li>
+                    <li>Structured the model by surface class — A (visible), B (back face), C (edges) — in separate geometrical sets.</li>
+                    <li>Held a constant 2.5 mm wall, rebuilding the radii instead of offsetting them.</li>
+                    <li>Added fixing points on the hidden side following the rib and boss rules, to keep the visible face free of sink marks.</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 18: Injection-Moulded Plastic Part Design — Automotive B-Pillar Trim</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">2026</p>
+    </footer>
+
+</body>
+</html>
