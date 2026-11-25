@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 15: Mayla — A Moroccan Tea Set That Pours Without Lifting</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #133D6E 0%, #0A2546 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+
+        header .breadcrumb {
+            margin-bottom: 20px;
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: #133D6E;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3D6FAB;
+        }
+
+        h3 {
+            color: #0A2546;
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        strong {
+            color: #0A2546;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f0f4fa 0%, #e8ecf4 100%);
+            padding: 25px;
+            border-left: 4px solid #133D6E;
+            border-radius: 4px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            color: #133D6E;
+            font-weight: 700;
+        }
+
+        .metric-unit {
+            font-size: 0.9em;
+            color: #999;
+            margin-left: 5px;
+        }
+
+        .finding {
+            background: #f0f4fa;
+            border-left: 4px solid #133D6E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .specs {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #0A2546;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: #133D6E;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization h4 {
+            color: #133D6E;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .visualization img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .visualization .caption {
+            font-size: 0.85em;
+            color: #777;
+            margin-top: 12px;
+            line-height: 1.5;
+        }
+
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .img-grid .visualization {
+            margin: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-height: 360px;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            border-bottom: 4px solid #3D6FAB;
+        }
+
+        @media (max-width: 768px) {
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: #3D6FAB;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            section {
+                padding: 25px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- topnav -->
+    <nav style="position:sticky; top:0; z-index:1000; background:#ffffff; border-bottom:1px solid #e0e6ed; padding:12px 40px; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+        <a href="index.html" style="color:#133D6E; text-decoration:none; font-weight:600; font-size:0.95em;">← Back to Portfolio</a>
+    </nav>
+    <header>
+        <div class="breadcrumb">
+            <a href="index.html">Portfolio</a> / Project 15
+        </div>
+        <h1>Mayla — A Moroccan Tea Set That Pours Without Lifting</h1>
+        <p>Inclusive Product Design | Self-Returning Pivot Mechanism | CATIA V5 Assembly &amp; Drafting</p>
+    </header>
+
+    <img src="assets/mayla_hero.jpg" alt="CATIA V5 model of the Mayla tea set — a stainless berrad teapot hung on pivot pins in a brass horseshoe-arch yoke, above a round brass tray holding six tea glasses" class="hero-image" style="max-height:360px; object-fit:contain; background:linear-gradient(180deg,#333365 0%,#444573 61%,#4f4e78 70%,#69698d 79%,#8384a0 87%,#9e9eb6 96%,#a8a9bd 100%);">
+
+    <div class="container">
+
+        <!-- OVERVIEW -->
+        <section>
+            <h2>Overview</h2>
+            <p>
+                Serving mint tea in Morocco is a hosting ritual: the host pours in front of the guests, from height, to raise a layer of foam. With a full 0.75 L teapot weighing about <strong>1.5 kg</strong> and holding boiling water, that pour asks a lot of the wrist — and it is exactly the movement that hand osteoarthritis and age-related weakness take away first. Existing aids (kettle tippers, electric dispensers) remove the effort but also remove the ritual.
+            </p>
+            <p>
+                <strong>Mayla</strong> keeps the host pouring at the table without lifting the pot. The teapot hangs on two pivot pins in a brass yoke and is tilted with an <strong>open palm</strong>; when released, gravity swings it back upright at any fill level. A rotating, indexed tray brings each of the six glasses under the spout in turn. The set was developed through a six-step design process (understand, empathize, define, ideate, prototype, evaluate) as a <strong>25-component parametric CATIA V5 assembly</strong>, linked to a pour model that computes moments, flow and where the stream lands.
+            </p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Peak Hand Force</div>
+                    <div class="metric-value">2.2<span class="metric-unit">N</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Effort Reduction</div>
+                    <div class="metric-value">≈85<span class="metric-unit">%</span></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Tilt Range</div>
+                    <div class="metric-value">0→68°</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Assembly</div>
+                    <div class="metric-value">25<span class="metric-unit">parts</span></div>
+                </div>
+            </div>
+
+            <div class="finding">
+                <strong>Design intent.</strong>
+                <p>Let a host with weak or painful hands serve six glasses from one fill without ever lifting the hot pot — with an open-palm push of no more than 3 N, a pot that always returns upright on its own, and a set that looks like traditional tableware rather than a medical aid.</p>
+            </div>
+        </section>
+
+        <!-- REQUIREMENTS -->
+        <section>
+            <h2>Design Requirements</h2>
+            <p>The need statement — <em>a host with weak hands should keep pouring for their guests without lifting a full pot of boiling water</em> — was broken down into ten measurable requirements, drawing on the universal-design principles of low physical effort and tolerance for error:</p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Low effort</span><span class="spec-value">≤ 3 N, open palm, no grip</span></div>
+                <div class="spec-item"><span class="spec-label">No lift to serve</span><span class="spec-value">Six 120 ml glasses from one fill</span></div>
+                <div class="spec-item"><span class="spec-label">Fail-safe</span><span class="spec-value">Returns upright at any fill level</span></div>
+                <div class="spec-item"><span class="spec-label">Accurate</span><span class="spec-value">Stream lands inside a 56 mm glass mouth</span></div>
+                <div class="spec-item"><span class="spec-label">Ceremony</span><span class="spec-value">First pour from at least 130 mm</span></div>
+                <div class="spec-item"><span class="spec-label">Stable</span><span class="spec-value">Withstands a 20 N push at the top</span></div>
+                <div class="spec-item"><span class="spec-label">Food safe</span><span class="spec-value">304 stainless steel, no lead solder</span></div>
+                <div class="spec-item"><span class="spec-label">Dignified</span><span class="spec-value">Tableware look, no medical cues</span></div>
+                <div class="spec-item"><span class="spec-label">Repairable</span><span class="spec-value">All parts separate with a screwdriver</span></div>
+                <div class="spec-item"><span class="spec-label">Viable</span><span class="spec-value">Break even within a 500-set first batch</span></div>
+            </div>
+        </section>
+
+        <!-- CONCEPT -->
+        <section>
+            <h2>Concept Selection</h2>
+            <p>
+                Eight alternatives — from a tipping plate and a samovar-style tap to an electric pump — were scored on efficiency, preservation of the ritual, safety, dignity, and cost and ease of repair. The <strong>swing cradle with a ring tray</strong> came out clearly ahead; the next-best concepts removed the effort too, but at the cost of the pour or of the ritual.
+            </p>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Concept</th><th>Weighted score</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Swing cradle + ring tray (selected)</strong></td><td><strong>4.10</strong></td></tr>
+                    <tr><td>Two-handled pot</td><td>3.25</td></tr>
+                    <tr><td>Samovar tap</td><td>3.20</td></tr>
+                </tbody>
+            </table>
+            <h3>Culture as structure, not decoration</h3>
+            <p>
+                The yoke that carries the pot is a <strong>horseshoe arch</strong> taken from Moroccan architecture — and it is the load path, not an ornament. The pot keeps the traditional <strong>berrad</strong> silhouette, and the spun-brass tray is engraved with eight-point stars. These choices are deliberately left open to change by Moroccan hosts and makers before production.
+            </p>
+        </section>
+
+        <!-- MECHANISM -->
+        <section>
+            <h2>The Self-Returning Pivot</h2>
+            <p>
+                The pot is carried on two pins in PEEK bushes. The pivot sits <strong>100 mm above the pot and 3 mm forward of its axis</strong>, so with a full pot the centre of gravity hangs <strong>28 mm below the pivot</strong> — gravity always pulls the pot back to vertical. To pour, the host lifts a walnut palm rest <strong>111 mm behind the pivot</strong>: a short lever pushed with an open hand, never a handle to grip.
+            </p>
+
+            <div class="visualization">
+                <h4>Front view at ~62° of tilt</h4>
+                <img src="assets/mayla_front_view_62deg.jpg" alt="CATIA V5 drafting front view of the Mayla tea set with the pot tilted about 62 degrees on its yoke pivot, spout over the row of glasses, the fill jug standing at the left">
+                <p class="caption">CATIA V5 drafting view. The pot rotates about the pin at the top of the yoke; the spout tip sits 97 mm ahead of and 58 mm above the pivot, so it travels almost vertically during the pour and the stream stays over the glass.</p>
+            </div>
+
+            <p>The hand force comes straight from the moment balance about the pivot. At 35° of tilt (about 660 ml left in the pot), the 13.7 N weight acts only 16 mm behind the pivot — compared with 14.5 N to lift the full pot by hand:</p>
+            <p style="margin: 15px 40px; color: #f57c00; font-family: 'Courier New', monospace;">
+                F<sub>hand</sub> = (W·d + M<sub>friction</sub>) / 111 mm ≈ 2.2 N
+            </p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Pivot position</span><span class="spec-value">100 mm above the pot, 3 mm forward of its axis</span></div>
+                <div class="spec-item"><span class="spec-label">Full-pot CG</span><span class="spec-value">28 mm below the pivot</span></div>
+                <div class="spec-item"><span class="spec-label">Palm-rest lever arm</span><span class="spec-value">111 mm behind the pivot</span></div>
+                <div class="spec-item"><span class="spec-label">Spout tip</span><span class="spec-value">97 mm ahead of, 58 mm above the pivot</span></div>
+                <div class="spec-item"><span class="spec-label">Peak hand force / wrist torque</span><span class="spec-value">2.2 N / 0.24 N·m (lifting by hand: 14.5 N / 1.64 N·m)</span></div>
+            </div>
+
+            <div class="visualization">
+                <h4>At rest, at 35° and at 62° of tilt</h4>
+                <img src="assets/mayla_tilt_sequence.jpg" alt="Three CATIA V5 renders of the Mayla tea set: the pot upright at rest, tilted to 35 degrees, and tilted to 62 degrees over the glasses">
+                <p class="caption">The pour sequence in the CATIA assembly. As the pot empties the host tilts further; the pour height falls from 165 mm at the first glass to 112 mm at the last.</p>
+            </div>
+        </section>
+
+        <!-- ITERATIONS -->
+        <section>
+            <h2>Design Iterations Driven by the Pour Model</h2>
+            <p>Linking the CAD geometry to the pour model exposed three problems before any hardware existed:</p>
+            <h3>1 — The empty pot fell forwards</h3>
+            <p>
+                In the first layout the pivot sat 85 mm above the pot, on its axis. With a full pot this works, but as the pot empties its centre of gravity rises and the moment changes sign: a nearly empty pot fell <em>forwards</em> instead of swinging back. Raising the pivot to 100 mm and moving it 3 mm forward keeps the return moment negative across the whole tilt range and at every fill level.
+            </p>
+            <div class="visualization">
+                <h4>Gravity moment on an empty pot vs tilt angle</h4>
+                <img src="assets/mayla_pivot_moment.png" alt="Line chart of gravity moment on an empty pot versus tilt from 0 to 68 degrees: the first layout is positive and rising (falls forward), the final layout is negative throughout (swings back upright)">
+                <p class="caption">First layout (gold): positive moment, the empty pot falls forward. Final layout (blue): negative moment from 0° to 68°, so the pot always swings back upright. Calculated from the CAD geometry.</p>
+            </div>
+            <h3>2 — The stream missed the glass</h3>
+            <p>
+                With a 10 mm spout bore the landing point of the stream spread over 70 mm as the flow rate and tilt changed. Opening the bore to <strong>12 mm</strong> and bringing the glasses closer together cut the spread to <strong>57 mm</strong> — and shortened the tray from 418 mm to <strong>368 mm</strong>.
+            </p>
+            <h3>3 — Nothing stopped the pot lifting out mid-pour</h3>
+            <p>
+                Flats machined on the pivot pins solved it: the pot can only be lifted out of the yoke when it is upright, and is locked in as soon as it tilts about 5°.
+            </p>
+        </section>
+
+        <!-- SAFETY -->
+        <section>
+            <h2>Safety Features &amp; Design for Repair</h2>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Pin lock</span><span class="spec-value">8 mm flats pass an 8.5 mm slot only when upright; locked beyond ~5°</span></div>
+                <div class="spec-item"><span class="spec-label">Hard stops</span><span class="spec-value">Bar on one pin meets a rear bumper at 0° and a front bumper at ~68° (11 ml left)</span></div>
+                <div class="spec-item"><span class="spec-label">Self-closing lid</span><span class="spec-value">Rear-hinged; CG 17 mm ahead of the hinge at 68°, so it stays shut with no latch</span></div>
+                <div class="spec-item"><span class="spec-label">Indexed tray</span><span class="spec-value">Spring plunger clicks into six notches at 60°, one per glass, on a ball-bearing ring</span></div>
+                <div class="spec-item"><span class="spec-label">Controlled return</span><span class="spec-value">Rotary soft-return damper at the pivot</span></div>
+            </div>
+            <div class="visualization">
+                <h4>Exploded view and parts list</h4>
+                <img src="assets/mayla_exploded_bom.jpg" alt="CATIA V5 exploded view of the 25 Mayla components with numbered balloons, next to the parts list: silicone foot ring, coated-steel base, bearing races and balls, POM index ring, spun-brass tray, spring plunger, cast-brass arch yoke, PEEK bushes, soft-return damper, 304 stainless pot, walnut palm shelf, lid, infuser, fill jug and six glasses">
+                <p class="caption">25 components in 15 part groups, all of which come apart with a screwdriver in the CAD model. Materials are separable — 304 stainless steel, recycled brass, walnut, PEEK and POM — to support repair, ten-year spare parts and end-of-life recovery.</p>
+            </div>
+        </section>
+
+        <!-- EVALUATION -->
+        <section>
+            <h2>Evaluation Against Requirements</h2>
+            <p>The design was checked against every requirement using the CAD geometry and the pour model. A sweep through 0–68° found no mechanical clashes.</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Requirement</th><th>Result</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Low effort</td><td>2.2 N at most, no grip</td><td>Met (calculated)</td></tr>
+                    <tr><td>No lift to serve</td><td>Serves six; 11 ml left at the 68° stop</td><td>Met (calculated)</td></tr>
+                    <tr><td>Fail-safe</td><td>Return moment ≥ 0.022 N·m, twice the estimated friction</td><td>Met (calculated)</td></tr>
+                    <tr><td>Accurate</td><td>97 % of cases; last glass at slow flow misses by 1 mm</td><td>Mostly met</td></tr>
+                    <tr><td>Ceremony</td><td>165 mm first glass, 112 mm last; foam unknown</td><td>Partly met</td></tr>
+                    <tr><td>Stable</td><td>24.9 N worst case (target 20 N)</td><td>Met (calculated)</td></tr>
+                    <tr><td>Food safe</td><td>Specified; lab test still needed</td><td>Needs test</td></tr>
+                    <tr><td>Dignified</td><td>Not yet tested with people</td><td>Needs users</td></tr>
+                    <tr><td>Repairable</td><td>All 15 part groups separate in the CAD model</td><td>Met (by design)</td></tr>
+                    <tr><td>Viable</td><td>Break-even at 368 sets on desk estimates</td><td>Needs quotes</td></tr>
+                </tbody>
+            </table>
+            <div class="visualization">
+                <h4>Force at the hand: lifting by hand vs tilting on Mayla</h4>
+                <img src="assets/mayla_hand_force.png" alt="Bar chart of force at the hand: 14.5 N to lift the full pot by hand, against 2.2, 2.1, 1.9, 1.6, 1.2 and 0.8 N to pour glasses one to six on Mayla">
+                <p class="caption">Peak force to pour each glass on Mayla (gold) against lifting the full pot by hand (grey), at 25 ml/s and a bearing friction coefficient of 0.25.</p>
+            </div>
+        </section>
+
+        <!-- COST -->
+        <section>
+            <h2>Costing &amp; Viability</h2>
+            <p>A desk estimate for a first batch of 500 sets, made in Morocco by six craftsmen over about ten weeks:</p>
+            <div class="specs">
+                <div class="spec-item"><span class="spec-label">Direct cost per set</span><span class="spec-value">US$97.50 (materials US$70, labour 4.5 h, moulded-pulp packaging)</span></div>
+                <div class="spec-item"><span class="spec-label">Retail price</span><span class="spec-value">US$249, positioned as a premium gift</span></div>
+                <div class="spec-item"><span class="spec-label">Contribution per set</span><span class="spec-value">US$81.72, after a US$3 repair fund</span></div>
+                <div class="spec-item"><span class="spec-label">Design, testing, tooling &amp; launch</span><span class="spec-value">US$30,000</span></div>
+                <div class="spec-item"><span class="spec-label">Break-even</span><span class="spec-value">368 sets</span></div>
+            </div>
+        </section>
+
+        <!-- STATUS / NEXT STEPS -->
+        <section>
+            <h2>Status &amp; Next Steps</h2>
+            <div style="background:#fff8e1; border-left:4px solid #f57c00; padding:20px 25px; border-radius:4px;">
+                <p style="font-weight:600; color:#e65100; margin-bottom:8px;">Digital prototype — user testing is the next phase</p>
+                <p style="color:#5c4a1a; font-size:0.95em;">The results on this page are calculations from the CAD geometry, not user evidence. They assume a bearing friction coefficient of 0.25, a spout velocity coefficient of 0.75 and little slosh. The analysis also surfaces real limitations: filling still means lifting a 0.48 kg jug three times; the 165 mm first pour is lower than a traditional pour from around a foot; foam has not been tested; and the 6.7 kg set needs a stable, low salon table. Next: a cardboard rig with a real pot tested by five hosts with cold water, a separate hot-foam test, a food-contact lab test and supplier quotes — with a redesign if hosts find the shorter pour unacceptable.</p>
+            </div>
+        </section>
+
+        <!-- OUTCOMES -->
+        <section>
+            <div style="background:#e8f5e9; padding:25px; border-radius:4px; border-left:4px solid #2e7d32;">
+                <p style="font-weight:600; color:#1b5e20; margin-bottom:10px;">✓ Project Outcomes</p>
+                <ul style="margin-left:20px; color:#2e7d32;">
+                    <li>Designed a gravity self-returning pivot that cuts the force to pour from 14.5 N to 2.2 N (≈85 %) and removes the need to grip.</li>
+                    <li>Built a 25-component parametric CATIA V5 assembly with drafting views and a parts list, exported to STEP.</li>
+                    <li>Linked the CAD geometry to a pour model (moments, flow, stream landing) that drove three design iterations: pivot position, spout bore and a pin lock.</li>
+                    <li>Added passive safety features — pin lock, hard stops, self-closing lid, indexed tray — with no clashes over the full 0–68° tilt.</li>
+                    <li>Turned Moroccan design language into structure: the horseshoe-arch yoke is the load path.</li>
+                    <li>Evaluated the design against ten requirements and a first-batch cost model, and stated openly what still needs testing with users.</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Widad Elyamani</strong> — Project 15: Mayla — A Moroccan Tea Set That Pours Without Lifting</p>
+        <p><a href="index.html">← Back to Portfolio</a></p>
+        <p style="margin-top: 20px; font-size: 0.9em;">2026</p>
+    </footer>
+
+</body>
+</html>
