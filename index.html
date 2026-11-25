@@ -494,7 +494,7 @@
 
         .search-clear[hidden] { display: none; }
 
-        /* Discipline filter — fifteen projects is too many to scan linearly */
+        /* Discipline filter — sixteen projects is too many to scan linearly */
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
@@ -611,6 +611,103 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Surface-modelling gallery — screenshots read best at 4:3,
+           and a click opens the full image in a lightbox. */
+        .surf-intro {
+            max-width: 800px;
+            color: #555;
+            margin: -25px 0 35px;
+        }
+
+        .surf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 70px;
+        }
+
+        .surf-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .surf-item a {
+            display: block;
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            background: #3a3a6c;
+            cursor: zoom-in;
+        }
+
+        .surf-item a:focus-visible {
+            outline: 3px solid #3D6FAB;
+            outline-offset: -3px;
+        }
+
+        .surf-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s ease;
+        }
+
+        .surf-item:hover img { transform: scale(1.04); }
+
+        .surf-item figcaption {
+            padding: 18px 20px 20px;
+        }
+
+        .surf-item h3 {
+            color: #133D6E;
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .surf-item p {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+
+        .surf-item .project-tags { margin-bottom: 0; }
+
+        .surf-lightbox {
+            border: none;
+            padding: 0;
+            background: transparent;
+            max-width: min(1100px, 94vw);
+            margin: auto;
+        }
+
+        .surf-lightbox::backdrop { background: rgba(10, 20, 35, 0.85); }
+
+        .surf-lightbox img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .surf-lightbox p {
+            color: #fff;
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.95em;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .surf-item img { transition: none; }
+            .surf-item:hover img { transform: none; }
+        }
     </style>
 </head>
 <body>
@@ -625,6 +722,7 @@
     <nav>
         <ul>
             <li><a href="#projects">Projects</a></li>
+            <li><a href="#surface">Surface Modelling</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -640,6 +738,7 @@
                 <button class="filter-btn" data-filter="structures" aria-pressed="false">Structures &amp; FEA<span class="count"></span></button>
                 <button class="filter-btn" data-filter="composites" aria-pressed="false">Composites<span class="count"></span></button>
                 <button class="filter-btn" data-filter="aircraft" aria-pressed="false">Aircraft &amp; Mechanisms<span class="count"></span></button>
+                <button class="filter-btn" data-filter="cad" aria-pressed="false">CAD &amp; Surfacing<span class="count"></span></button>
 
                 <button type="button" class="search-toggle" id="searchToggle"
                         aria-expanded="false" aria-controls="searchPanel" aria-label="Search projects">
@@ -1063,11 +1162,150 @@
                 </div>
             </a>
 
+            <!-- PROJECT 16: CATIA V5 Surface Modelling -->
+            <a class="project-card" data-category="cad" href="project_16_surface_modelling.html">
+                <img src="assets/surf_card_thumb.jpg" alt="CATIA V5 surface model of a 4-into-1 exhaust manifold thumbnail" class="card-image">
+                <div class="project-header">
+                    <div class="project-number">Project 16</div>
+                    <h3 class="project-title">CATIA V5 Surface Modelling — Freeform Parts</h3>
+                    <p class="project-subtitle">Generative Shape Design | Automotive &amp; Consumer Parts</p>
+                </div>
+                <div class="project-content">
+                    <span class="status completed">Completed</span>
+                    <p class="project-desc">
+                        Seven parts modelled in CATIA V5 Generative Shape Design: two alloy wheels, a 4-into-1 exhaust manifold, a 2-into-1 down-pipe, an ergonomic mouse shell, a soap dish and a formed bracket with a stiffening bead. Each is built from a wireframe skeleton, then surfaced, joined, trimmed and filleted.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">CATIA V5</span>
+                        <span class="tag">GSD</span>
+                        <span class="tag">Surface Modelling</span>
+                        <span class="tag">Automotive</span>
+                        <span class="tag">Product Design</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        <strong>Key Achievement:</strong> Freeform shapes that solid features alone handle poorly — runners swept along 3D paths, sculpted wheel spokes, blended product shells — all driven from wireframe skeletons
+                    </p>
+                    <span class="project-link">View Case Study →</span>
+                </div>
+            </a>
+
         </div>
 
         <p class="filter-empty" id="noResults" hidden>
-            No projects match that. <button type="button" class="link-reset" id="resetAll">Show all fifteen</button>
+            No projects match that. <button type="button" class="link-reset" id="resetAll">Show all sixteen</button>
         </p>
+
+        <!-- SURFACE MODELLING SECTION -->
+        <h2 class="section-title" id="surface">Surface Modelling — CATIA V5</h2>
+        <p class="surf-intro">
+            A selection of surface-modelling work in CATIA V5 <strong>Generative Shape Design</strong>: free-form shells, swept tubular parts and patterned automotive geometry, where the shape is controlled surface by surface before it becomes a solid. Click any model to enlarge it.
+        </p>
+
+        <div class="surf-grid">
+            <figure class="surf-item">
+                <a href="assets/surf_grip_shell.jpg" data-caption="Ergonomic Grip Shell">
+                    <img src="assets/surf_grip_shell.jpg" alt="CATIA V5 surface model: Ergonomic Grip Shell" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>Ergonomic Grip Shell</h3>
+                    <p>Free-form ergonomic shell built from a network of surface patches, joined into one smooth closed body.</p>
+                    <div class="project-tags">
+                        <span class="tag">Free-form</span>
+                        <span class="tag">Surface patches</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="surf-item">
+                <a href="assets/surf_wheel_spokes.jpg" data-caption="Alloy Wheel — Spoke Concept">
+                    <img src="assets/surf_wheel_spokes.jpg" alt="CATIA V5 surface model: Alloy Wheel — Spoke Concept" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>Alloy Wheel — Spoke Concept</h3>
+                    <p>Rim band from a revolved profile; the spoke is modelled once in surfaces and repeated around the hub.</p>
+                    <div class="project-tags">
+                        <span class="tag">Revolve</span>
+                        <span class="tag">Circular pattern</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="surf-item">
+                <a href="assets/surf_soap_dish.jpg" data-caption="Soap Dish">
+                    <img src="assets/surf_soap_dish.jpg" alt="CATIA V5 surface model: Soap Dish" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>Soap Dish</h3>
+                    <p>Oblong tray with a rolled rim and five drainage slots cut through the floor.</p>
+                    <div class="project-tags">
+                        <span class="tag">Consumer product</span>
+                        <span class="tag">Split &amp; trim</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="surf-item">
+                <a href="assets/surf_stamped_bracket.jpg" data-caption="Stamped Bracket">
+                    <img src="assets/surf_stamped_bracket.jpg" alt="CATIA V5 surface model: Stamped Bracket" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>Stamped Bracket</h3>
+                    <p>Sheet bracket with two bends, an embossed stiffening rib and two mounting holes.</p>
+                    <div class="project-tags">
+                        <span class="tag">Sheet part</span>
+                        <span class="tag">Stiffening rib</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="surf-item">
+                <a href="assets/surf_exhaust_pipe.jpg" data-caption="Twin-Branch Exhaust Pipe">
+                    <img src="assets/surf_exhaust_pipe.jpg" alt="CATIA V5 surface model: Twin-Branch Exhaust Pipe" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>Twin-Branch Exhaust Pipe</h3>
+                    <p>Two tubes swept along 3D spine curves, merging into a single outlet, with a two-bolt inlet flange.</p>
+                    <div class="project-tags">
+                        <span class="tag">Sweep</span>
+                        <span class="tag">3D spine curves</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="surf-item">
+                <a href="assets/surf_exhaust_manifold.jpg" data-caption="4-into-1 Exhaust Manifold">
+                    <img src="assets/surf_exhaust_manifold.jpg" alt="CATIA V5 surface model: 4-into-1 Exhaust Manifold" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>4-into-1 Exhaust Manifold</h3>
+                    <p>Four primary runners swept from the cylinder-head flange into a collector cone with its outlet flange.</p>
+                    <div class="project-tags">
+                        <span class="tag">Sweep</span>
+                        <span class="tag">Collector transition</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+            <figure class="surf-item">
+                <a href="assets/surf_multispoke_wheel.jpg" data-caption="Multi-Spoke Alloy Wheel">
+                    <img src="assets/surf_multispoke_wheel.jpg" alt="CATIA V5 surface model: Multi-Spoke Alloy Wheel" loading="lazy">
+                </a>
+                <figcaption>
+                    <h3>Multi-Spoke Alloy Wheel</h3>
+                    <p>Deep-dish rim from a revolved profile, with a split multi-spoke face patterned around the hub.</p>
+                    <div class="project-tags">
+                        <span class="tag">Revolve</span>
+                        <span class="tag">Pattern</span>
+                    </div>
+                </figcaption>
+            </figure>
+
+        </div>
+
+        <dialog class="surf-lightbox" id="surfLightbox" aria-label="Enlarged surface model">
+            <img src="" alt="">
+            <p></p>
+        </dialog>
 
         <!-- ABOUT SECTION -->
         <h2 class="section-title" id="about">About This Portfolio</h2>
@@ -1079,7 +1317,7 @@
                 Projects range from <strong>industrial experience at Airbus Atlantic Maroc</strong> (composite radome design and validation) to <strong>academic research</strong> (stiffened structure optimization, CFD validation) and <strong>freelance engineering services</strong> (parametric FEA optimization).
             </p>
             <p>
-                <strong>Key Skills:</strong> ANSYS Fluent/Mechanical · CATIA V5 · Creo Parametric · SolidWorks · FEA/CFD Analysis · Structural Optimization · Python Automation · MATLAB · Composite Structures · Aircraft Design · Flight Testing
+                <strong>Key Skills:</strong> ANSYS Fluent/Mechanical · CATIA V5 (Part Design, Generative Shape Design) · Creo Parametric · SolidWorks · FEA/CFD Analysis · Structural Optimization · Python Automation · MATLAB · Composite Structures · Aircraft Design · Flight Testing
             </p>
         </div>
 
@@ -1380,5 +1618,28 @@
 })();
 </script>
 
+<script>
+/* ------------------------------------------------------------------
+   Surface-modelling lightbox. Without JavaScript each tile is still a
+   plain link to the full image; with it, the image opens in place.
+   ------------------------------------------------------------------ */
+(function () {
+    var box = document.getElementById('surfLightbox');
+    if (!box || typeof box.showModal !== 'function') return;
+    var img = box.querySelector('img');
+    var cap = box.querySelector('p');
+    Array.prototype.forEach.call(document.querySelectorAll('.surf-item a'), function (a) {
+        a.addEventListener('click', function (e) {
+            e.preventDefault();
+            img.src = a.getAttribute('href');
+            img.alt = a.querySelector('img').alt;
+            cap.textContent = a.dataset.caption || '';
+            box.showModal();
+        });
+    });
+    // Any click closes it — on the image or on the dimmed backdrop
+    box.addEventListener('click', function () { box.close(); });
+})();
+</script>
 </body>
 </html>
